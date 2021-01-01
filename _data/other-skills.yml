@@ -1,0 +1,20 @@
+-
+    name: 'Algoritmica e programmazione'
+    percentage: 90
+    color: danger
+-
+    name: OWASP Top Ten e CVSS
+    percentage: 80
+    color: success
+-
+    name: Frontend
+    percentage: 70
+    color: dark
+-
+    name: 'Produzione di Documenti'
+    percentage: 85
+    color: secondary
+-
+    name: DAST/SAST
+    percentage: 80
+    color: primary

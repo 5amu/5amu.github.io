@@ -1,0 +1,53 @@
+title                 : 'Valerio Casalino'
+description           : "Cybersecurity Student @ <a href='https://www.uniroma1.it/it'>Sapienza</a>"
+
+url                   : 'https://www.casalinovalerio.com'
+baseurl               : ""
+repository            : casalinovalerio/casalinovalerio.github.io
+remote_theme          : YoussefRaafatNasry/portfolYOU@v2.1.0
+
+author:
+    name              : 'Valerio Casalino'
+    image             : /images/valerio-casalino.webp
+    email             : casalinovalerio.cv@gmail.com
+    github            : casalinovalerio
+    linkedin          : valerio-casalino
+    telegram          : casalinovalerio
+    medium            : casalinovalerio.cv
+    paypal            : https://paypal.me/casalinovalerio
+
+paginate              : 6
+paginate_path         : '/blog/page-:num/'
+
+permalink             : 'blog/:title'
+
+nav_exclude:                        
+    - blog/tags.html
+    - blog/page-:num/index.html
+    - pages/404.html
+    - pages/index.md
+    - pages/documentation/**
+
+collections:
+    projects:
+        output        : true
+        permalink     : '/projects/:name'
+
+defaults:
+    -
+        scope:
+            path      : ""
+            type      : projects
+        values:
+            layout    : page
+
+plugins:
+    - jekyll-seo-tag
+    - jemoji
+
+exclude:
+    - README.md
+    - CONTRIBUTING.md
+    - LICENSE
+    - Gemfile
+    - Gemfile.lock

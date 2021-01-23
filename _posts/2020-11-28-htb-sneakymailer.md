@@ -5,7 +5,7 @@ author: Valerio Casalino
 style: fill
 color: primary
 tags: [Writeups, Hackthebox]
-description: Writeup for SneakyMailer (Hackthebox)
+description: <img src="/assets/avatars/sneakymailer.png"> Writeup for SneakyMailer (Hackthebox)
 ---
 
 # SneakyMailer

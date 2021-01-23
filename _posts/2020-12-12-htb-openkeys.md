@@ -5,7 +5,7 @@ author: Valerio Casalino
 style: fill
 color: danger
 tags: [Writeups, Hackthebox]
-description: Writeup for OpenKeys (Hackthebox)
+description: <img src="/assets/avatars/openkeys.png"> Writeup for OpenKeys (Hackthebox)
 ---
 
 # OpenKeys

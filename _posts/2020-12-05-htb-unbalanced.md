@@ -5,7 +5,7 @@ author: Valerio Casalino
 style: fill
 color: dark
 tags: [Writeups, Hackthebox]
-description: Writeup for Unbalanced (Hackthebox)
+description: <img src="/assets/avatars/unbalanced.png"> Writeup for Unbalanced (Hackthebox)
 ---
 
 # Unbalanced

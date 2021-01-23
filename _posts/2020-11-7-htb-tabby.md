@@ -5,7 +5,7 @@ title: Tabby Writeup
 style: fill
 color: light
 tags: [Writeups, Hackthebox]
-description: Writeup for Tabby (Hackthebox)
+description: <img src="/assets/avatars/tabby.png"> Writeup for Tabby (Hackthebox)
 ---
 
 # Tabby

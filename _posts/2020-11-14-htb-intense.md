@@ -5,7 +5,7 @@ author: Valerio Casalino
 style: fill
 color: danger
 tags: [Writeups, Hackthebox]
-description: Writeup for Intense (Hackthebox)
+description: <img src="/assets/avatars/intense.png"> Writeup for Intense (Hackthebox)
 ---
 
 # Intense

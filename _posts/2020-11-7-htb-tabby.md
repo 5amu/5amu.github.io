@@ -1,8 +1,10 @@
 ---
-icon: /assets/avatars/tabby.png
 image: /assets/avatars/tabby.png
 author: Valerio Casalino
 title: Tabby Writeup
+style: fill
+tags: [Writeups, Hackthebox]
+description: Writeup for Tabby (Hackthebox)
 ---
 
 # Tabby

@@ -1,11 +1,13 @@
 ---
-icon: /assets/avatar/assets/openkeys.png
 image: /assets/avatar/assets/openkeys.png
 title: OpenKeys Writeup
 author: Valerio Casalino
+style: fill
+tags: [Writeups, Hackthebox]
+description: Writeup for OpenKeys (Hackthebox)
 ---
 
-# OpenKeyS
+# OpenKeys
 
 As always... `nmap` that thing:
 

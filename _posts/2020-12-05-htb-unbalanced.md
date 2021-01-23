@@ -1,8 +1,10 @@
 ---
-icon: /assets/avatars/unbalanced.png
 image: /assets/avatars/unbalanced.png
 title: Unbalanced Writeup
 author: Valerio Casalino
+style: fill
+tags: [Writeups, Hackthebox]
+description: Writeup for Unbalanced (Hackthebox)
 ---
 
 # Unbalanced

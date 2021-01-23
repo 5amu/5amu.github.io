@@ -1,8 +1,10 @@
 ---
-icon: /assets/avatars/sneakymailer.png
 image: /assets/avatars/sneakymailer.png
 title: Sneakymailer Writeup
 author: Valerio Casalino
+style: fill
+tags: [Writeups, Hackthebox]
+description: Writeup for SneakyMailer (Hackthebox)
 ---
 
 # SneakyMailer

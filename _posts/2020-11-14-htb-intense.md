@@ -1,8 +1,10 @@
 ---
 title: Intense Writeup
-icon: /assets/avatars/intense.png
 image: /assets/avatars/intense.png
 author: Valerio Casalino
+style: fill
+tags: [Writeups, Hackthebox]
+description: Writeup for Intense (Hackthebox)
 ---
 
 # Intense

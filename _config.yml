@@ -12,9 +12,6 @@ author:
     email             : casalinovalerio.cv@gmail.com
     github            : 5amu
     linkedin          : valerio-casalino
-    telegram          : casalinovalerio
-    medium            : casalinovalerio.cv
-    paypal            : https://paypal.me/casalinovalerio
 
 paginate              : 6
 paginate_path         : '/blog/page-:num/'

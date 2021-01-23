@@ -1,9 +1,9 @@
 title                 : 'Valerio Casalino'
-description           : "Cybersecurity Student @ <a href='https://www.uniroma1.it/it'>Sapienza</a>"
+description           : "Cybersecurity Analyst @ <a href='https://www.bipconsulting.com/'>Bip</a>"
 
 url                   : 'https://www.casalinovalerio.com'
 baseurl               : ""
-repository            : casalinovalerio/casalinovalerio.github.io
+repository            : 5amu/5amu.github.io
 remote_theme          : YoussefRaafatNasry/portfolYOU@v2.1.0
 
 author:

@@ -1,7 +1,7 @@
 ---
 title: Blackarch
 style: fill
-color: light
+color: dark
 image: /images/blackarch.webp
 tags: [Linux, Arch, OS, pentesting]
 description: <img src="/images/blackarch.webp"> Arch is made to rule them all. Blackarch is a meta distribution to make all the pentesting tools available on Arch Linux.

@@ -3,7 +3,7 @@ title: Intense Writeup
 image: /assets/avatars/intense.png
 author: Valerio Casalino
 style: fill
-color: danger
+color: dark
 tags: [Writeups, Hackthebox]
 description: <img src="/assets/avatars/intense.png"> Writeup for Intense (Hackthebox)
 ---

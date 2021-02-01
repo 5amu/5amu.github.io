@@ -1,7 +1,7 @@
 ---
 title: Polyglot Binaries vs MS Antivirus
 style: fill
-color: primary
+color: dark
 image: /images/polyglotbin-vs-av.png
 tags: [Linux, OS, Windows]
 description: <img src="/images/polyglotbin-vs-av.png"> Small and not-scientific analysis of MS Windows Defender behavior against Polyglot binaries

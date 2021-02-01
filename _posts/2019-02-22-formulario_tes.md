@@ -1,7 +1,7 @@
 ---
 title: Formulario TES @ Politecnico di Torino
 style: fill
-color: light
+color: dark
 image: /images/thumbnail-formulario.webp
 tags: [ ingegneria informatica, formulario ]
 description: <img src="/images/thumbnail-formulario.webp"> Formulario di Teoria ed Elaborazione dei Segnali al Polito

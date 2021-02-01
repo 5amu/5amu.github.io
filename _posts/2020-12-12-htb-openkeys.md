@@ -3,7 +3,7 @@ image: /assets/avatar/assets/openkeys.png
 title: OpenKeys Writeup
 author: Valerio Casalino
 style: fill
-color: danger
+color: dark
 tags: [Writeups, Hackthebox]
 description: <img src="/assets/avatars/openkeys.png"> Writeup for OpenKeys (Hackthebox)
 ---

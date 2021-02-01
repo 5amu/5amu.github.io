@@ -5,7 +5,7 @@ title: Un nuovo modo di pensare le ads
 image: /images/brave-and-bat.webp
 tags: [sicurezza, privacy]
 description: <img src="/images/brave-and-bat.webp"> Un browser senza compromessi.
-color: light
+color: dark
 ---
 
 ![Thumbnail]({{ site.url }}/images/brave-and-bat.webp)

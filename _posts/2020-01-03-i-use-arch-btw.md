@@ -1,7 +1,7 @@
 ---
 title: I use Arch BTW
 style: fill
-color: danger
+color: dark
 image: /images/arch.webp
 tags: [Linux, Arch, OS, optimization]
 description: <img src="/images/arch.webp"> I wrote this article both to get a future reference for what I did to improve my system and to wrap up my researches on the topic.

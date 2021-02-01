@@ -3,7 +3,7 @@ image: /assets/avatars/tabby.png
 author: Valerio Casalino
 title: Tabby Writeup
 style: fill
-color: light
+color: dark
 tags: [Writeups, Hackthebox]
 description: <img src="/assets/avatars/tabby.png"> Writeup for Tabby (Hackthebox)
 ---

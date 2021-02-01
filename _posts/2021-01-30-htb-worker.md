@@ -3,7 +3,7 @@ icon: /assets/avatars/worker.png
 title: Worker Writeup
 author: Valerio Casalino
 style: fill
-color: primary
+color: dark
 tags: [Writeups, Hackthebox]
 description: <img src="/assets/avatars/worker.png"> Writeup for Worker (Hackthebox)
 ---

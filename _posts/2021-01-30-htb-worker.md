@@ -5,7 +5,7 @@ author: Valerio Casalino
 style: fill
 color: primary
 tags: [Writeups, Hackthebox]
-description: <img src="/assets/avatars/unbalanced.png"> Writeup for Worker (Hackthebox)
+description: <img src="/assets/avatars/worker.png"> Writeup for Worker (Hackthebox)
 ---
 
 # Worker

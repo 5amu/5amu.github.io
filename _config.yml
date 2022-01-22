@@ -4,7 +4,7 @@ description           : "Cybersecurity Analyst @ <a href='https://www.bipconsult
 url                   : 'https://www.casalinovalerio.com'
 baseurl               : ""
 repository            : 5amu/5amu.github.io
-remote_theme          : YoussefRaafatNasry/portfolYOU@v2.1.0
+remote_theme          : YoussefRaafatNasry/portfolYOU@v2.3.0
 
 author:
     name              : 'Valerio Casalino'

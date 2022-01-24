@@ -185,7 +185,7 @@ main {
 
 /* lbox */
 
-.content img {
+.content img :not(.emoji) {
   cursor: zoom-in;
   margin-left: auto;  
   margin-right: auto;  

@@ -1,25 +1,17 @@
 <head>
-
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="{{ site.description }}">
-
-  {% seo %}
-
-  <title>{{ site.title }}</title>
-  <link rel="shortcut icon" type="image/x-icon" href="{{ '/assets/favicon.png' | relative_url }}">
-
-  <!-- Font Awesome CDN -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.0/css/all.css">
-
-  <!-- Bootstrap CSS CDN -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
-  <!-- Animate CSS CDN -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css" type="text/css"/>
-  
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}" type="text/css">
-
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{site.title}} | {{page.title}}</title>
+  {% if page.layout == "post" %}
+  <link rel="stylesheet" href="{{site.baseurl}}/assets/css/post.css" />
+  <link rel="stylesheet" href="{{site.baseurl}}/assets/css/syntax.css" />
+  {% else %}
+  <link rel="stylesheet" href="{{site.baseurl}}/assets/css/blog.css" />
+  {%endif%}
+  <link rel="stylesheet" href="{{site.baseurl}}/assets/css/common.css" />
+  <script src="{{site.baseurl}}/assets/js/categories.js"></script>
+  {% if page.layout == "post" %}
+  <script defer src="{{site.baseurl}}/assets/js/lbox.js"></script>
+  {% endif %}
 </head>

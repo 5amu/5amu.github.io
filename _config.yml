@@ -1,50 +1,28 @@
-title                 : 'Valerio Casalino'
-description           : "Cybersecurity Analyst @ <a href='https://www.bipconsulting.com/'>Bip</a>"
+title: "5amu@blog:~$"
+markdown: kramdown
+url: ""
+baseurl: ""
 
-url                   : 'https://www.casalinovalerio.com'
-baseurl               : ""
-repository            : 5amu/5amu.github.io
-remote_theme          : YoussefRaafatNasry/portfolYOU@v2.1.0
-
+# for atom feed
 author:
-    name              : 'Valerio Casalino'
-    image             : /images/valerio-casalino.webp
-    email             : casalinovalerio.cv@gmail.com
-    github            : 5amu
-    linkedin          : valerio-casalino
-
-paginate              : 6
-paginate_path         : '/blog/page-:num/'
-
-permalink             : 'blog/:title'
-
-nav_exclude:                        
-    - blog/tags.html
-    - blog/page-:num/index.html
-    - pages/404.html
-    - pages/index.md
-    - pages/documentation/**
-
-collections:
-    projects:
-        output        : true
-        permalink     : '/projects/:name'
-
-defaults:
-    -
-        scope:
-            path      : ""
-            type      : projects
-        values:
-            layout    : page
+  name: Valerio Casalino
+  email: casalinovalerio.cv [at] gmail.com
 
 plugins:
-    - jekyll-seo-tag
-    - jemoji
+  - jemoji
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
 
-exclude:
-    - README.md
-    - CONTRIBUTING.md
-    - LICENSE
-    - Gemfile
-    - Gemfile.lock
+placeholder: /assets/icons/placeholder.png
+
+posts:
+    output: true
+
+defaults:
+  - scope:
+      path: "_posts"
+    values:
+      layout: "post"
+      permalink: /p/:title/
+exclude: ["sitemap.xml", "feed.xml", "LICENSE", "README.md"]

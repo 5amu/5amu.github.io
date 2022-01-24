@@ -1,15 +1,7 @@
 ---
-title: I use Arch BTW
-style: fill
-color: dark
-image: /images/arch.webp
-tags: [Linux, Arch, OS, optimization]
-description: <img src="/images/arch.webp"> I wrote this article both to get a future reference for what I did to improve my system and to wrap up my researches on the topic.
+image: https://avatars.githubusercontent.com/u/4673648?v=4
+categories: [utilities]
 ---
-
-![Thumbnail]({{ site.url }}/images/arch.webp)
-
-## Introduction
 
 I’ve always knew about Arch Linux, and always felt that to use this distro, I would have always problems and troubles. So I never switched… Until now. I’m 1 month deep in this experience and the only thing I can think is that i love it. The complete control over my system is what I’ve always wanted from my PC.
 
@@ -120,7 +112,7 @@ Make sure to install the correct video drivers… For this one, just follow the 
 
 For firmware specific to your particular hardware, you might find interesting software provided directly by OEMs. To check if it is the case, you have to install `fwupd` and run:
 
-```
+```bash
 fupdfmgr get-devices
 fupdfmgr refresh
 fupdfmgr get-updates

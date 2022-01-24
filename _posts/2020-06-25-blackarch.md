@@ -1,15 +1,9 @@
 ---
 title: Blackarch
-style: fill
-color: dark
-image: /images/blackarch.webp
-tags: [Linux, Arch, OS, pentesting]
-description: <img src="/images/blackarch.webp"> Arch is made to rule them all. Blackarch is a meta distribution to make all the pentesting tools available on Arch Linux.
+image: https://raw.githubusercontent.com/BlackArch/blackarch-artwork/master/logo/blackarch-linux-logo_440x440.png
+categories: [pentesting, utilities]
+thumbnail: /assets/img/blackarch.webp 
 ---
-
-![Thumbnail]({{ site.url }}/images/blackarch.webp)
-
-## Introduction
 
 I'm stable on Arch on my laptop since the last post. I've tried Manjaro and 
 other distributions in the meantime, but nothing makes you forget the 

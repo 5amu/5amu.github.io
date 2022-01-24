@@ -28,6 +28,7 @@ body {
   background-color: var(--gray-6);
   font-family: "JetBrains Mono", monospace;
   line-height: 2rem;
+  text-align: justify;
   background-color: var(--gray-5);
 }
 .content a {
@@ -230,8 +231,11 @@ main {
   height: 100%;
   width: 100%;
 }
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 800px) {
   body {
     padding: 1.5rem;
+  }
+  main {
+    max-width: 100%;
   }
 }

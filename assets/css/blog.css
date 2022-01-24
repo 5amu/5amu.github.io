@@ -52,9 +52,40 @@ main {
   justify-content: flex-start;
   align-items: center;
 }
+@media screen and (max-width: 550px){
+  header .site-title {
+    text-align: center;
+  }
+  #bio {
+    display: block;
+  }
+  #img-wrapper {
+    max-width: 100%;
+    margin-bottom: 2rem;
+  }
+  #img-wrapper img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 50%;
+    height: auto;
+  }
+  #bio-wrapper p {
+    margin-left: 0;
+    text-align: center;
+  }
+  #social-wrapper{
+    position: relative;
+    width: 50%;
+    margin: auto;
+    text-align: center;
+  }
+  
+}
+
 #img-wrapper img {
   border-radius: 50%;
-  max-width: 100px;
+  max-width: 80%;
 }
 #bio-wrapper {
   margin-left: 1rem;

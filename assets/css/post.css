@@ -185,7 +185,7 @@ main {
 
 /* lbox */
 
-.content img :not(.emoji) {
+.content img {
   cursor: zoom-in;
   margin-left: auto;  
   margin-right: auto;  
@@ -193,6 +193,11 @@ main {
   height: auto;
   display: block;
   padding: 1rem;
+}
+.content .emoji {
+  cursor: none;
+  display: inline;
+  padding: 0;
 }
 
 #lightbox {

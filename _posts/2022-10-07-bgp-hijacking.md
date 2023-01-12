@@ -1,5 +1,5 @@
 ---
-image: https://xtom.com/icon/bgp.png
+image: /assets/img/bgp-subnet-takeover-asn.png
 categories: [pentest,research]
 ---
 

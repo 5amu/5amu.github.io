@@ -1,5 +1,5 @@
 ---
-image: https://avatars.githubusercontent.com/u/4673648?v=4
+image: /assets/img/archlinux_logo.png
 categories: [utilities]
 ---
 

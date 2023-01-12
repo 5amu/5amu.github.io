@@ -1,6 +1,6 @@
 ---
 title: Blackarch
-image: https://raw.githubusercontent.com/BlackArch/blackarch-artwork/master/logo/blackarch-linux-logo_440x440.png
+image: /assets/img/blackarch_logo.png
 categories: [pentesting, utilities]
 thumbnail: /assets/img/blackarch.webp 
 ---

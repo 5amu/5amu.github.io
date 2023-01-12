@@ -1,5 +1,5 @@
 ---
-image: /assets/img/bgp-subnet-takeover-asn.png
+image: /assets/img/bgp_icon.webp
 categories: [pentest,research]
 ---
 

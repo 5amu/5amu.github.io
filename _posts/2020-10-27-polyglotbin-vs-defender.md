@@ -1,5 +1,5 @@
 ---
-image: https://cdn1.iconfinder.com/data/icons/unigrid-phantom-culture/60/009_003_chat_talk_languages_different-512.png
+image: /assets/img/polyglot_icon.png
 categories: [red, edr]
 thumbnail: /assets/img/polyglotbin-vs-av.png
 ---

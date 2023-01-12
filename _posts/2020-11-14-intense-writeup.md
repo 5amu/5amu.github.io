@@ -1,5 +1,5 @@
 ---
-image: https://www.hackthebox.com/storage/avatars/41fa976e012eb51bee13efc5419ce8ac.png
+image: /assets/img/intense_icon.png
 categories: [writeup, hackthebox, pentest]
 ---
 

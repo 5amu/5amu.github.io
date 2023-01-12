@@ -1,5 +1,5 @@
 ---
-image: /assets/img/bgp_icon.webp
+image: /assets/img/bgp_icon.png
 categories: [pentest,research]
 ---
 

@@ -9,4 +9,3 @@ content:
     fields:
       - { name: image, label: Cover image, type: image }
       - { name: thumbnail, label: Thumbnail, type: image }
-      - { name: categories, label: Categories, type: text }

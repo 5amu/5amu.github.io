@@ -1,3 +1,70 @@
+/* Self-declared in place of @fontsource/iosevka's own stylesheets so we can
+   add unicode-range: Iosevka's glyph set includes monochrome symbol/emoji
+   codepoints (e.g. U+1F642), and without a range restriction those glyphs
+   pre-empt the color-emoji fonts later in the --font-* stacks. Capping this
+   to the BMP (all of normal Latin text/code) keeps real emoji (all above
+   U+FFFF) out of Iosevka's claimed range so they fall through correctly. */
+@font-face {
+  font-family: "Iosevka";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    url(https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5.3.0/files/iosevka-latin-400-normal.woff2)
+      format("woff2"),
+    url(https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5.3.0/files/iosevka-latin-400-normal.woff)
+      format("woff");
+  unicode-range: U+0000-FFFF;
+}
+@font-face {
+  font-family: "Iosevka";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    url(https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5.3.0/files/iosevka-latin-400-italic.woff2)
+      format("woff2"),
+    url(https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5.3.0/files/iosevka-latin-400-italic.woff)
+      format("woff");
+  unicode-range: U+0000-FFFF;
+}
+@font-face {
+  font-family: "Iosevka";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src:
+    url(https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5.3.0/files/iosevka-latin-600-normal.woff2)
+      format("woff2"),
+    url(https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5.3.0/files/iosevka-latin-600-normal.woff)
+      format("woff");
+  unicode-range: U+0000-FFFF;
+}
+@font-face {
+  font-family: "Iosevka";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    url(https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5.3.0/files/iosevka-latin-700-normal.woff2)
+      format("woff2"),
+    url(https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5.3.0/files/iosevka-latin-700-normal.woff)
+      format("woff");
+  unicode-range: U+0000-FFFF;
+}
+@font-face {
+  font-family: "Iosevka";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    url(https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5.3.0/files/iosevka-latin-700-italic.woff2)
+      format("woff2"),
+    url(https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5.3.0/files/iosevka-latin-700-italic.woff)
+      format("woff");
+  unicode-range: U+0000-FFFF;
+}
+
 :root {
   --bg: #fbfaf7;
   --bg-alt: #f1efe9;
@@ -7,9 +74,11 @@
   --border: #e2ded4;
   --code-bg: #f1efe9;
   --font-sans: "Iosevka", ui-monospace, SFMono-Regular, "SF Mono", Menlo,
-    Consolas, "Liberation Mono", monospace;
+    Consolas, "Liberation Mono", monospace, "Apple Color Emoji",
+    "Segoe UI Emoji", "Noto Color Emoji";
   --font-mono: "Iosevka", ui-monospace, SFMono-Regular, "SF Mono", Menlo,
-    Consolas, "Liberation Mono", monospace;
+    Consolas, "Liberation Mono", monospace, "Apple Color Emoji",
+    "Segoe UI Emoji", "Noto Color Emoji";
   --max-width: 680px;
 }
 

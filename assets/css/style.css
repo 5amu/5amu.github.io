@@ -258,7 +258,7 @@ hr,
 #bio {
   display: flex;
   gap: 20px;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 20px;
 }
 #bio .avatar {
@@ -267,6 +267,9 @@ hr,
   border-radius: 50%;
   flex-shrink: 0;
   display: block;
+}
+#bio #text-wrapper p {
+  margin: 0;
 }
 #bio .contact {
   font-family: var(--font-mono);

@@ -5,11 +5,18 @@
     <div class="wrap">
       {% include header.html %}
       <main>
-        {% include bio.html %}
         <hr />
-        <ul class="post-list">
+        <div class="search-box">
+          <input
+            type="search"
+            id="search-input"
+            placeholder="Search by title, tag, or keyword…"
+            autocomplete="off"
+          />
+        </div>
+        <ul class="post-list" id="post-list">
           {% for post in site.posts %}
-          <li>
+          <li data-url="{{ post.url }}">
             <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
             <span class="post-title"><a href="{{site.baseurl}}{{post.url}}">{{post.title}}</a></span>
             {% if post.categories %}
@@ -18,8 +25,50 @@
           </li>
           {% endfor %}
         </ul>
+        <p id="search-empty">No posts match your search.</p>
       </main>
       {% include footer.html %}
     </div>
+    <script>
+      (function () {
+        var input = document.getElementById("search-input");
+        var items = Array.prototype.slice.call(document.querySelectorAll("#post-list li"));
+        var empty = document.getElementById("search-empty");
+        var index = null;
+
+        function normalize(s) {
+          return (s || "").toLowerCase();
+        }
+
+        fetch("{{ '/search.json' | relative_url }}")
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            index = {};
+            data.forEach(function (post) {
+              index[post.url] = normalize(
+                [post.title, (post.categories || []).join(" "), post.content].join(" ")
+              );
+            });
+          })
+          .catch(function () {
+            // search index unavailable, fall back to matching visible text only
+          });
+
+        input.addEventListener("input", function () {
+          var terms = normalize(input.value).trim().split(/\s+/).filter(Boolean);
+          var visibleCount = 0;
+
+          items.forEach(function (li) {
+            var url = li.getAttribute("data-url");
+            var haystack = index && index[url] ? index[url] : normalize(li.textContent);
+            var matches = terms.every(function (t) { return haystack.indexOf(t) !== -1; });
+            li.style.display = matches ? "" : "none";
+            if (matches) visibleCount++;
+          });
+
+          empty.style.display = terms.length && visibleCount === 0 ? "" : "none";
+        });
+      })();
+    </script>
   </body>
 </html>

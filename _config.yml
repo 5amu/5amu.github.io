@@ -1,6 +1,7 @@
 title: "5amu@blog:~$"
+description: "Valerio Casalino's blog on offensive security, vulnerability management, and cybersecurity research."
 markdown: kramdown
-url: ""
+url: "https://5amu.github.io"
 baseurl: ""
 
 # for atom feed

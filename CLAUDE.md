@@ -22,10 +22,12 @@ There is no test suite, linter, or CI configured in this repo.
 
 ## Content architecture
 
-**Posts** live in `_posts/`, named `YYYY-MM-DD-title.md`. `_config.yml` applies `layout: post` and permalink `/p/:title/` to everything under `_posts` by default, so individual post front matter usually only needs `categories`:
+**Posts** live in `_posts/`, named `YYYY-MM-DD-title.md`. `_config.yml` applies `layout: post` and permalink `/p/:title/` to everything under `_posts` by default, so individual post front matter only strictly needs `categories`. In practice always set an explicit `title` too — Jekyll otherwise titleizes the filename slug for `page.title` (used in `<title>`, OG/JSON-LD, the homepage list, and the Atom feed), which reads badly for anything with an acronym or product name (e.g. `nuclei-can-now-speak-ad.md` would title itself "Nuclei Can Now Speak Ad" instead of "...AD"). Always set an explicit `description` too — it's the meta-description (and `og:description`/JSON-LD `description`), and it's also what `llms.txt` (below) puts next to the post's title, so a missing one falls back to a truncated `page.excerpt`, which is often just the post's opening words out of context (e.g. a writeup that opens with "As always, nmap") and misrepresents the post everywhere it's used:
 
 ```yaml
 ---
+title: "Nuclei Can Now Speak AD"
+description: "One sentence summarizing the post, used as the meta description when the opening paragraph doesn't work as one."
 categories:
   - dev
   - research
@@ -47,4 +49,12 @@ categories:
 
 **Styling**: a single `assets/css/style.css` (CSS custom properties on `:root`, redefined under `@media (prefers-color-scheme: dark)` — no manual theme toggle) covers the whole site, plus `assets/css/syntax.css` for Rouge code highlighting (loaded only on `post.html`, also palette-driven via the same custom properties).
 
-**SEO/GEO**: `head.html` renders `{% seo %}` (jekyll-seo-tag), which emits title, meta description, canonical URL, Open Graph/Twitter Card tags, and JSON-LD from `site.title`/`site.description`/`site.url` (in `_config.yml`) and each page's own `title`/`description` front matter. `about.md` additionally embeds a raw `<script type="application/ld+json">` Person schema block (kramdown passes raw HTML blocks through untouched, same mechanism as the Mermaid divs) — update it if bio facts (role, employer, education, profile links) change.
+**SEO/GEO**: `head.html` renders `{% seo %}` (jekyll-seo-tag) then `{% feed_meta %}` (jekyll-feed's `<link rel="alternate" type="application/atom+xml">` discovery tag — must stay paired with `{% seo %}`, it's easy to add the plugin and forget this tag). `{% seo %}` emits title, meta description, canonical URL, Open Graph/Twitter Card tags, and JSON-LD from `_config.yml`'s `title`/`description`/`url`/`author`/`logo`/`social` keys plus each page's own `title`/`description` front matter:
+- `author` (name/email/**url**) feeds the JSON-LD `author` on every page and the Atom feed's author.
+- `logo` (the same GitHub avatar URL used in `bio.html` — metadata only, doesn't violate the image-free rule above since it renders no new visible image) feeds the JSON-LD `publisher.logo` Google expects on `BlogPosting` rich results.
+- `social.name`/`social.links` (sameAs) feed the JSON-LD entity on the homepage and `/about/` only (jekyll-seo-tag's `homepage_or_about?` check) — update `links` if profile URLs change.
+- Post type (`BlogPosting`) vs. page type (`WebSite`/`WebPage`) in JSON-LD is inferred automatically from `page.date`, not set explicitly.
+
+`about.md` additionally embeds a raw `<script type="application/ld+json">` Person schema block (kramdown passes raw HTML blocks through untouched, same mechanism as the Mermaid divs) — update it if bio facts (role, employer, education, profile links) change.
+
+**`robots.txt`** and **`llms.txt`** live at the repo root as Liquid-templated pages (empty `---\n---` front matter, like `search.json`, so Jekyll runs them through Liquid but doesn't markdown-render them since their extension isn't a markdown one). `robots.txt` allows all crawlers and points to both `sitemap.xml` (from jekyll-sitemap) and `llms.txt`; jekyll-sitemap would otherwise auto-generate a bare-bones `robots.txt` itself, but backs off once a source file exists. `llms.txt` follows the [llms.txt convention](https://llmstxt.org) — a plain-Markdown index of the site (About link + every post title/categories/summary) meant for LLMs/generative engines to fetch directly instead of parsing rendered HTML; it loops `site.posts` the same way `blog.html` and `search.json` do, so keep it in sync if that loop's shape changes. Each post's summary line prefers its `description` front matter, falling back to a truncated `excerpt` only if `description` is unset — so every post should carry a `description` (see the note above about post front matter), otherwise its `llms.txt` entry is just the post's opening words out of context, which misrepresents the content.

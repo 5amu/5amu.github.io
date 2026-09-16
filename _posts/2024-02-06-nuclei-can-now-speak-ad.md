@@ -1,7 +1,8 @@
 ---
+title: "Nuclei Can Now Speak AD"
+description: "I extended Nuclei v3's JavaScript protocol by adding SSH, Kerberos, and LDAP modules, upstreamed in several pull requests; includes a ready-to-use Nuclei template I wrote that automates a full Kerberoasting attack against a domain controller and extracts crackable hashes."
 categories:
   - dev
-  - research
   - ad
 ---
 [Nuclei](https://github.com/projectdiscovery/nuclei) automates security assessments. Give it a yaml _template_ and it will spit out an answer telling you if the vulnerability defined in the template was found on the scope you selected. **Nuclei is as good as the templates that runs**.

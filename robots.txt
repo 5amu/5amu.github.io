@@ -1,0 +1,9 @@
+---
+---
+User-agent: *
+Allow: /
+
+# A structured, LLM-friendly index of this site's content:
+# {{ site.url }}{{ site.baseurl }}/llms.txt
+
+Sitemap: {{ site.url }}{{ site.baseurl }}/sitemap.xml

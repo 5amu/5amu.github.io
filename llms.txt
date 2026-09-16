@@ -1,0 +1,22 @@
+---
+---
+# {{ site.title }}
+
+> {{ site.description }}
+
+Written by {{ site.data.author.name }}, {{ site.data.author.description | strip_html }}.
+
+## About
+
+- [About]({{ site.url }}{{ site.baseurl }}/about/): Background, role, and contact links.
+
+## Posts
+{% for post in site.posts %}
+{%- if post.description %}{% assign summary = post.description %}{% else %}{% assign summary = post.excerpt | strip_html | normalize_whitespace | truncate: 200 %}{% endif %}
+- [{{ post.title }}]({{ post.url | absolute_url }}){% if post.categories %} ({{ post.categories | join: ", " }}){% endif %}: {{ summary | strip_html | normalize_whitespace }}
+{%- endfor %}
+
+## Feeds
+
+- [Atom feed]({{ site.url }}{{ site.baseurl }}/feed.xml)
+- [Sitemap]({{ site.url }}{{ site.baseurl }}/sitemap.xml)

@@ -4,10 +4,21 @@ markdown: kramdown
 url: "https://5amu.github.io"
 baseurl: ""
 
-# for atom feed
+# for atom feed and jekyll-seo-tag's JSON-LD author
 author:
   name: Valerio Casalino
   email: casalinovalerio.cv [at] gmail.com
+  url: "https://5amu.github.io/about/"
+
+# used by jekyll-seo-tag for Organization/publisher logo on BlogPosting JSON-LD
+logo: "https://avatars.githubusercontent.com/u/39925709?v=4"
+
+# used by jekyll-seo-tag for the homepage/about-page JSON-LD entity (name + sameAs)
+social:
+  name: Valerio Casalino
+  links:
+    - "https://github.com/5amu"
+    - "https://www.linkedin.com/in/valerio-casalino"
 
 plugins:
   - jekyll-seo-tag

@@ -1,5 +1,4 @@
 ---
-image: /assets/img/nuclei_image.png
 categories:
   - dev
   - research
@@ -69,8 +68,7 @@ javascript:
           dsl:
             - "success == true"
 ```
-This is a simple template to find *nix machines where the root account can login via password authentication using ssh!
-![](assets/img/example-ssh.png)
+This is a simple template to find *nix machines where the root account can login via password authentication using ssh, and running it against a set of hosts prints out every vulnerable one straight to the terminal.
 ### About the Kerberos module
 
 The changes introduced into the kerberos module allow the templates to request service tickets when talking to a domain controller, the improvements concern dependencies' optimizations too. The syntax to get a service ticket (formatted for hashcat) is very simple:
@@ -100,10 +98,7 @@ func TGStoHashcat(tgs messages.Ticket, username string) (string, error) {
 
 ### About the LDAP module
 
-Here there are the most contributions... This is the [full list](https://github.com/projectdiscovery/nuclei/pull/4667) of features I implemented:
-
-![](assets/img/full-list-ldap.png)
-Basically this allows a template to connect to an ldap server and query using whatever filter and getting whatever attribute, but I also added some "utility" methods to retrieve specific stuff from active directory, such as:
+Here there are the most contributions... this is the [full list](https://github.com/projectdiscovery/nuclei/pull/4667) of features I implemented. Basically this allows a template to connect to an ldap server and query using whatever filter and getting whatever attribute, but I also added some "utility" methods to retrieve specific stuff from active directory, such as:
 
 ```go
 // ADObject represents an Active Directory object
@@ -186,7 +181,8 @@ javascript:
           - '.[] | "\(.Name) => \(.Hash)"'
 ```
 
-![](assets/img/example-kerberoast.png)
+Running this template against a domain controller prints out every kerberoastable account together with its crackable hash, ready to hand off to hashcat.
+
 ## Closing Thoughts
 
 The future in which will be possible to automate the **most common** attacks on active directory is near, the technical knowledge required to get into this world (ad pentesting) will decrease even more over time. Companies (hopefully) will implement all measures to cut off these low hanging vulnerabilities and the exploit complexity will spike, but for now there is still time to play 😊.

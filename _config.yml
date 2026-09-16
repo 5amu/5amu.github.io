@@ -9,12 +9,9 @@ author:
   email: casalinovalerio.cv [at] gmail.com
 
 plugins:
-  - jemoji
   - jekyll-seo-tag
   - jekyll-sitemap
   - jekyll-feed
-
-placeholder: /assets/icons/placeholder.png
 
 posts:
     output: true

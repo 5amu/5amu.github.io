@@ -1,15 +1,11 @@
 <section id="bio">
-  <section id="img-wrapper">
-    <img src="{{site.data.author.dp}}" alt="" />
-  </section>
-  <section id="bio-wrapper">
+  <a href="https://github.com/5amu" target="_blank" rel="noopener">
+    <img class="avatar" src="{{site.data.author.dp}}" alt="{{site.data.author.name}}" />
+  </a>
+  <div>
     <div id="text-wrapper">{{site.data.author.description}}</div>
-    <div id="social-wrapper">
-      {% for i in site.data.author.contact %}
-      <a href="{{i.url}}" target="_blank">
-        <img src="{{site.baseurl}}/assets/icons/{{i.title}}.png" alt="" />
-      </a>
-      {%endfor%}
+    <div class="contact">
+      {% for i in site.data.author.contact %}<a href="{{i.url}}" target="_blank" rel="noopener">{{i.title}}</a>{% unless forloop.last %} · {% endunless %}{% endfor %}
     </div>
-  </section>
+  </div>
 </section>

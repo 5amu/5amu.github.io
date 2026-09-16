@@ -1,5 +1,4 @@
 ---
-image: /assets/img/bgp_icon.png
 categories: [pentest,research]
 ---
 
@@ -21,9 +20,14 @@ corresponding IP address(es) associated with it.
 This is a simplified overview, but this is not the place to discuss this 
 topic in more details, please do your own research.
 
-![Very good scheme](/assets/img/bgp-subnet-takeover-schema-internet.png)
-
-<p align="right">Image credits: <a href="https://twitter.com/manekinekko">@manekinekko</a></p>
+<div class="mermaid">
+sequenceDiagram
+    participant Client
+    participant Nameserver
+    Client->>Nameserver: resolve example.com?
+    Nameserver-->>Client: 93.184.216.34
+    Client->>93.184.216.34: connect
+</div>
 
 ## Autonomous Systems
 
@@ -54,18 +58,30 @@ that send the received requests to the hopefully intended next-hop.
 These massive routers and relative subnets are called 
 [Autonomous Systems](https://www.cloudflare.com/learning/network-layer/what-is-an-autonomous-system/).
 
-![Very good scheme](/assets/img/bgp-subnet-takeover-asn.png)
-
-<p align="right">Image credits: <a href="https://www.cloudflare.com/learning/network-layer/what-is-an-autonomous-system/">Cloudflare</a></p>
+<div class="mermaid">
+graph LR
+    subgraph AS1 [Autonomous System 1]
+        R1[Border router]
+    end
+    subgraph AS2 [Autonomous System 2]
+        R2[Border router]
+    end
+    R1 <--> R2
+</div>
 
 ## The Border Gateway Protocol
 
 Bastion routers implement BGP ([Border Gateway Protocol](https://www.cloudflare.com/learning/security/glossary/what-is-bgp/))
 because internet is a network of networks, or a network of autonomous systems.
 
-![Very good scheme](/assets/img/bgp-subnet-takeover-net-of-nets.png)
-
-<p align="right">Image credits: <a href="https://www.cloudflare.com/learning/security/glossary/what-is-bgp/">Cloudflare</a></p>
+<div class="mermaid">
+graph TB
+    AS1[AS 1] --- AS2[AS 2]
+    AS2 --- AS3[AS 3]
+    AS3 --- AS4[AS 4]
+    AS4 --- AS1
+    AS1 --- AS3
+</div>
 
 BGP is the protocol that allows gateways to know where to send a packet when
 a certain IP address is requested. Typically, the smallest range of public IPs
@@ -78,7 +94,12 @@ address range, having at least 254 IPs in the network.
 > it. One could configure a computer with the purpose of effectively stealing
 > a company routes.
 
-![Very good scheme](/assets/img/bgp-subnet-takeover-hijacking.png)
+<div class="mermaid">
+graph LR
+    Legit["Legitimate AS<br/>owns 93.184.216.0/24"] -->|normally advertises| Internet((Internet))
+    Rogue["Rogue BGP router"] -->|also advertises<br/>93.184.216.0/24| Internet
+    Internet -->|traffic hijacked to| Rogue
+</div>
 
 BGP has not a secure method to establish if a particular server is authorized
 to present itself with a particular IP address, that is why it is so important
@@ -110,9 +131,9 @@ OriginAS:       AS15169
 ...
 ```
 
-One RPKI Validator: [https://rpki.cloudflare.com/?view=validator](https://rpki.cloudflare.com/?view=validator)
-
-![Very good scheme](/assets/img/bgp-subnet-takeover-rpki.png)
+You can validate a route's RPKI status yourself with Cloudflare's
+[RPKI validator](https://rpki.cloudflare.com/?view=validator), passing it the
+prefix and origin AS number you want to check.
 
 Failing to configure this entry to validate the advertised routes might result
 in an accidental, or intentional 

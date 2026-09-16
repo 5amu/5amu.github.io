@@ -1,9 +1,6 @@
 ---
-image: /assets/img/liquidfiles_logo.png
 categories: [cve, pentest]
 ---
-
-![thumbnail](https://i.imgflip.com/62gg79.jpg)
 
 ## Executive summary
 
@@ -137,4 +134,4 @@ To mitigate this vulnerability, the solution is to disable API calls for "Admins
 
 ## Conclusion
 
-It was great to discover this vulnerability and very satisfying to be awarded a CVE, I could get used to it :wink:. If you want a better article for this CVE, look at the one from my collegue [here](https://nananan.github.io/posts/liquid-files-cve/).
+It was great to discover this vulnerability and very satisfying to be awarded a CVE, I could get used to it 😉. If you want a better article for this CVE, look at the one from my collegue [here](https://nananan.github.io/posts/liquid-files-cve/).

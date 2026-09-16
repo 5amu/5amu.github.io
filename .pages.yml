@@ -5,8 +5,6 @@ content:
     type: collection
     path: _posts
     view:
-      fields: [ image, thumbnail, date, categories ]
+      fields: [ date, categories ]
     fields:
-      - { name: image, label: Cover image, type: image }
-      - { name: thumbnail, label: Thumbnail, type: image }
       - { name: body, label: Body, type: rich-text }

@@ -246,6 +246,39 @@ main {
   padding: 20px 0;
 }
 
+/* tag filter */
+.tag-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+.tag-filter-btn,
+.tag-filter-clear {
+  font-family: var(--font-mono);
+  font-size: 0.78em;
+  color: var(--muted);
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+.tag-filter-btn:hover,
+.tag-filter-clear:hover {
+  border-color: var(--accent);
+  color: var(--fg);
+}
+.tag-filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+.tag-filter-clear {
+  border-style: dashed;
+}
+
 /* post list */
 ul.post-list {
   list-style: none;
@@ -273,9 +306,25 @@ ul.post-list .post-title {
   flex: 1;
 }
 ul.post-list .tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
   font-family: var(--font-mono);
   font-size: 0.78em;
+}
+ul.post-list .tags .tag {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
   color: var(--muted);
+  cursor: pointer;
+}
+ul.post-list .tags .tag:hover,
+ul.post-list .tags .tag.active {
+  color: var(--accent);
+  text-decoration: underline;
 }
 
 /* post page */

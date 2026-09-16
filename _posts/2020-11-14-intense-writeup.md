@@ -1,5 +1,7 @@
 ---
-categories: [writeup, hackthebox, pentest]
+title: "Intense: A HackTheBox Writeup"
+description: "A HackTheBox 'Intense' walkthrough: a blind SQL injection leaks a session secret, a hash length extension attack forges an admin cookie, SNMP command injection gives a foothold, and a ret2libc buffer-overflow exploit bypassing a stack canary gets root."
+categories: [writeup, pentest]
 ---
 
 As always, nmap

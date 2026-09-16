@@ -14,13 +14,22 @@
             autocomplete="off"
           />
         </div>
+        {% assign sorted_categories = site.categories | sort %}
+        {% if sorted_categories.size > 0 %}
+        <div class="tag-filter" id="tag-filter">
+          {% for cat in sorted_categories %}
+          <button type="button" class="tag-filter-btn" data-tag="{{ cat[0] }}" aria-pressed="false">#{{ cat[0] }}</button>
+          {% endfor %}
+          <button type="button" class="tag-filter-clear" id="tag-filter-clear" hidden>clear</button>
+        </div>
+        {% endif %}
         <ul class="post-list" id="post-list">
           {% for post in site.posts %}
-          <li data-url="{{ post.url }}">
+          <li data-url="{{ post.url }}" data-tags="{{ post.categories | join: ' ' }}">
             <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
             <span class="post-title"><a href="{{site.baseurl}}{{post.url}}">{{post.title}}</a></span>
             {% if post.categories %}
-            <span class="tags">{% for c in post.categories %}#{{c}} {% endfor %}</span>
+            <span class="tags">{% for c in post.categories %}<button type="button" class="tag" data-tag="{{ c }}" aria-pressed="false">#{{ c }}</button>{% endfor %}</span>
             {% endif %}
           </li>
           {% endfor %}
@@ -34,7 +43,9 @@
         var input = document.getElementById("search-input");
         var items = Array.prototype.slice.call(document.querySelectorAll("#post-list li"));
         var empty = document.getElementById("search-empty");
+        var clearBtn = document.getElementById("tag-filter-clear");
         var index = null;
+        var selectedTags = [];
 
         function normalize(s) {
           return (s || "").toLowerCase();
@@ -54,20 +65,65 @@
             // search index unavailable, fall back to matching visible text only
           });
 
-        input.addEventListener("input", function () {
+        function isSelected(tag) {
+          return selectedTags.indexOf(tag) !== -1;
+        }
+
+        function toggleTag(tag) {
+          var i = selectedTags.indexOf(tag);
+          if (i === -1) {
+            selectedTags.push(tag);
+          } else {
+            selectedTags.splice(i, 1);
+          }
+          syncTagButtons();
+          applyFilters();
+        }
+
+        function syncTagButtons() {
+          var buttons = document.querySelectorAll("[data-tag]");
+          buttons.forEach(function (btn) {
+            var active = isSelected(btn.getAttribute("data-tag"));
+            btn.classList.toggle("active", active);
+            btn.setAttribute("aria-pressed", active ? "true" : "false");
+          });
+          if (clearBtn) clearBtn.hidden = selectedTags.length === 0;
+        }
+
+        function applyFilters() {
           var terms = normalize(input.value).trim().split(/\s+/).filter(Boolean);
           var visibleCount = 0;
 
           items.forEach(function (li) {
             var url = li.getAttribute("data-url");
             var haystack = index && index[url] ? index[url] : normalize(li.textContent);
-            var matches = terms.every(function (t) { return haystack.indexOf(t) !== -1; });
+            var textMatches = terms.every(function (t) { return haystack.indexOf(t) !== -1; });
+
+            var postTags = (li.getAttribute("data-tags") || "").split(/\s+/).filter(Boolean);
+            var tagMatches = selectedTags.every(function (t) { return postTags.indexOf(t) !== -1; });
+
+            var matches = textMatches && tagMatches;
             li.style.display = matches ? "" : "none";
             if (matches) visibleCount++;
           });
 
-          empty.style.display = terms.length && visibleCount === 0 ? "" : "none";
+          empty.style.display = (terms.length || selectedTags.length) && visibleCount === 0 ? "" : "none";
+        }
+
+        input.addEventListener("input", applyFilters);
+
+        document.addEventListener("click", function (e) {
+          var btn = e.target.closest("[data-tag]");
+          if (btn) toggleTag(btn.getAttribute("data-tag"));
         });
+
+        if (clearBtn) {
+          clearBtn.addEventListener("click", function () {
+            selectedTags = [];
+            syncTagButtons();
+            applyFilters();
+          });
+        }
       })();
     </script>
   </body>

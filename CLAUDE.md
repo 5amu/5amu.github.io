@@ -35,15 +35,15 @@ categories:
 ```
 
 **Layouts** (`_layouts/`):
-- `blog.html` — the homepage (`index.md` uses `layout: blog`). Renders the bio and a plain text list (`ul.post-list`) of `site.posts` — date, title, `#category` tags — no images.
+- `blog.html` — the homepage (`index.md` uses `layout: blog`). Renders the bio and a list (`ul.post-list`) of `site.posts` — a small thumbnail (only if `post.thumbnail` is set, no placeholder fallback), date, title, `#category` tags.
 - `post.html` — individual post pages. Renders title/date/tags, then `{{content}}`, then loads Mermaid (see below) via an inline `<script type="module">`.
 - `page.html` — generic content pages (currently just `about.md`, permalink `/about/`). Renders `page.title` as an `<h1>` then `{{content}}`, no date/tags/Mermaid. Reuses `post.html`'s `.post-header`/`.content` CSS classes.
 
 **Includes** (`_includes/`) are shared partials: `head.html` (stylesheets), `header.html` (site title + nav), `footer.html`, `bio.html` (reads `_data/author.yml` for the avatar and contact links).
 
-**The site is intentionally image-free.** No post cover/thumbnail images, no icon images for contact links (they're plain text, e.g. "github", "linkedin", joined with " · " in `bio.html`), no `jemoji` plugin (removed from `_config.yml` — write literal unicode emoji in post bodies instead of `:shortcode:` syntax, since jemoji renders shortcodes as `<img>`). The only image on the whole site is the author's GitHub avatar (`_data/author.yml`'s `dp` field, an `avatars.githubusercontent.com` URL), used in `bio.html`, always linked to `https://github.com/5amu`. Keep it that way when adding content — don't reintroduce screenshots/diagrams as raster images.
+**Post thumbnails and in-body images are supported.** A post can set `thumbnail: /assets/img/whatever.png` in its front matter; `blog.html` renders it as a small (36px) square next to that post's row, and it's exposed as an `image` field in `.pages.yml` so it's pickable from Pages CMS's media browser (media root: `assets`). It's optional — posts without one just show no thumbnail, there's no generic placeholder graphic. Post bodies can embed images normally (`![alt](/assets/img/whatever.png)`); `.content img` in `style.css` handles sizing/border/radius. Contact links in `bio.html` remain plain text (no icon images), and `jemoji` is still not re-enabled — write literal unicode emoji in post bodies instead of `:shortcode:` syntax, since jemoji renders shortcodes as `<img>`. Images live in `assets/img/`; there's no image optimization/resizing pipeline in this repo, so keep files reasonably web-sized before committing them.
 
-**Diagrams belong in Mermaid, not images.** Post pages load Mermaid from a CDN (`post.html`) and auto-render any `<div class="mermaid">...</div>` raw-HTML block in the markdown (kramdown passes raw HTML blocks through untouched, which sidesteps Rouge trying and failing to syntax-highlight a "mermaid" fenced code block as a language it doesn't know). See `_posts/2022-10-07-bgp-hijacking.md` for worked examples (sequence and graph diagrams). This only applies to `post.html` — the homepage doesn't load Mermaid.
+**Diagrams can be Mermaid or images** — pick whichever fits the content. Post pages load Mermaid from a CDN (`post.html`) and auto-render any `<div class="mermaid">...</div>` raw-HTML block in the markdown (kramdown passes raw HTML blocks through untouched, which sidesteps Rouge trying and failing to syntax-highlight a "mermaid" fenced code block as a language it doesn't know). See `_posts/2022-10-07-bgp-hijacking.md` for worked examples (sequence and graph diagrams) — that post intentionally keeps its conceptual diagrams as Mermaid (vector, theme-aware) rather than the original raster screenshots, even though other posts now embed raster images directly. This only applies to `post.html` — the homepage doesn't load Mermaid.
 
 **Author/contact info** lives in `_data/author.yml` (name, avatar URL, bio HTML, `contact: [{title, url}]`) and is consumed by `bio.html`, which renders the `contact` list as plain text links.
 
@@ -51,7 +51,7 @@ categories:
 
 **SEO/GEO**: `head.html` renders `{% seo %}` (jekyll-seo-tag) then `{% feed_meta %}` (jekyll-feed's `<link rel="alternate" type="application/atom+xml">` discovery tag — must stay paired with `{% seo %}`, it's easy to add the plugin and forget this tag). `{% seo %}` emits title, meta description, canonical URL, Open Graph/Twitter Card tags, and JSON-LD from `_config.yml`'s `title`/`description`/`url`/`author`/`logo`/`social` keys plus each page's own `title`/`description` front matter:
 - `author` (name/email/**url**) feeds the JSON-LD `author` on every page and the Atom feed's author.
-- `logo` (the same GitHub avatar URL used in `bio.html` — metadata only, doesn't violate the image-free rule above since it renders no new visible image) feeds the JSON-LD `publisher.logo` Google expects on `BlogPosting` rich results.
+- `logo` (the same GitHub avatar URL used in `bio.html`) feeds the JSON-LD `publisher.logo` Google expects on `BlogPosting` rich results.
 - `social.name`/`social.links` (sameAs) feed the JSON-LD entity on the homepage and `/about/` only (jekyll-seo-tag's `homepage_or_about?` check) — update `links` if profile URLs change.
 - Post type (`BlogPosting`) vs. page type (`WebSite`/`WebPage`) in JSON-LD is inferred automatically from `page.date`, not set explicitly.
 

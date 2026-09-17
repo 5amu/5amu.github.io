@@ -2,6 +2,7 @@
 title: "BGP Hijacking: A Deep Dive"
 description: "Explains DNS resolution, Autonomous Systems, and BGP, then shows how missing RPKI route validation enables BGP hijacking, citing real incidents (the 2022 Twitter/Russian-ISP reroute, the 2022 KlaySwap crypto theft) and a DIY BGP-router experiment by Kenneth Finnegan."
 categories: [pentest,research]
+thumbnail: /assets/img/bgp_icon.png
 ---
 
 > Sometimes, during security assessments and penetration tests an in-depth 

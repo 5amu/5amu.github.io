@@ -2,6 +2,7 @@
 title: "PolyglotBin vs Windows Defender"
 description: "Tests whether Windows Defender detects malware (netcat, a keylogger, plink, PwDump) hidden inside binary polyglots — PDF, ZIP, ISO, TAR, RAR, 7z, ARJ, PCAP — built with Ange Albertini's mitra tool; a few combinations evaded detection entirely."
 categories: [red, research]
+thumbnail: /assets/img/polyglot_icon.png
 ---
 
 Yesterday I saw this video from [LiveOverflow](https://twitter.com/liveoverflow):
@@ -14,8 +15,24 @@ So I generated 8 binaries (.7z, .arj, .iso, .pcap, .pdf, .rar, .tar, .zip) to co
 
 Initially, I copied just the original exe files, and Windows Defender managed to detect (and with some delay, automatically delete) all threats! Kudos... I guess.
 
-Then, I copied all of the polyglots and ran a full scan on the folder. Out of 44 combinations (including the original exe files), 19 survived, given that plink64 is not seen by Windows Defender as a big enough threat to automatically remove it. Running a fresh full scan on those survivors, our beautiful tool actually managed to detect them as a Trojan!
+Then, I copied all of the polyglots and ran a full scan on the folder. Here's the results:
 
-Let's delete the busted binaries and the plink64 files (which aren't necessarily a threat), and run the test again: unfortunately, we are busted once more (I had renamed `nc.exe.pdf` back to `nc.exe` for testing). Even though `nc.exe.arj` was no longer in the folder, I deleted every busted file and ran a new test. This time it was definitive, and a small handful of polyglots survived every scan.
+![image-20201027144220581](/assets/img/image-20201027144220581.png)
+
+Out of 44 combinations (including the original exe files), these 19 survived! Given that plink64 is not seen by Windows Defender as a big enough threat to automatically remove it. Let's see what our beautiful tool says about these files with a full scan.
+
+![image-20201027144457859](/assets/img/image-20201027144457859.png)
+
+It actually managed to detect them as a Trojan! Let's delete the busted binaries, plink64 files (which aren't necessary a threat) and run the test again:
+
+![image-20201027150041736](/assets/img/image-20201027150041736.png)
+
+Unfortunately, we are busted again (I renamed nc.exe.pdf to nc.exe for testing). Even if nc.exe.arj was not in the folder, I deleted every busted file and ran a new test. Now it's definitive:
+
+![image-20201027150435954](/assets/img/image-20201027150435954.png)
+
+Here they are... the survivors:
+
+![image-20201027150523251](/assets/img/image-20201027150523251.png)
 
 It was fun and educational. Thanks to LiveOverflow and [Ange Albertini](https://github.com/angea) for the research and developing of mitra.

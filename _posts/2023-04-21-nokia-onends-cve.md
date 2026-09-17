@@ -2,6 +2,7 @@
 title: "Nokia OneNDS Sudo PrivEsc (CVE-2022-31244)"
 description: "I found and reported, with three colleagues, a Nokia OneNDS misconfiguration where three admin roles could abuse the sudo rights granted to /sbin/service, /bin/rpm, /sbin/ip and /sbin/arp to escalate to root — assigned CVE-2022-31244."
 categories: [cve, pentest]
+thumbnail: /assets/img/nokia_logo.png
 ---
 
 ## Executive summary

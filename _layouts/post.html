@@ -7,11 +7,16 @@
       <main>
         <article>
           <div class="post-header">
-            <h1>{{page.title}}</h1>
-            <div class="post-meta">
-              <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y-%m-%d" }}</time>
-              {% for c in page.categories %}<span class="tag">{{c}}</span>{% endfor %}
+            <div class="post-header-text">
+              <h1>{{page.title}}</h1>
+              <div class="post-meta">
+                <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y-%m-%d" }}</time>
+                {% for c in page.categories %}<span class="tag">{{c}}</span>{% endfor %}
+              </div>
             </div>
+            {% if page.thumbnail %}
+            <img class="post-header-thumb" src="{{page.thumbnail | relative_url}}" alt="" />
+            {% endif %}
           </div>
           <div class="content">{{content}}</div>
         </article>

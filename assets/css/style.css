@@ -318,6 +318,50 @@ main {
   padding: 20px 0;
 }
 
+/* encrypted posts */
+.decrypt-gate {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.decrypt-gate p {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+.decrypt-gate input {
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.decrypt-gate input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.decrypt-gate button {
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: var(--bg);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.decrypt-error {
+  color: #c0392b;
+}
+
 /* tag filter */
 .tag-filter {
   display: flex;

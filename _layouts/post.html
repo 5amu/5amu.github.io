@@ -30,6 +30,10 @@
         startOnLoad: true,
         theme: window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "default",
       });
+      document.addEventListener("post:decrypted", () => mermaid.run());
     </script>
+    {% if page.encrypted %}
+    <script src="{{ '/assets/js/encrypted-post.js' | relative_url }}"{% if page.encrypted_prompt %} data-prompt="{{ page.encrypted_prompt | xml_escape }}"{% endif %}></script>
+    {% endif %}
   </body>
 </html>

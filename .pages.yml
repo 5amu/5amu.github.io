@@ -9,3 +9,5 @@ content:
     fields:
       - { name: body, label: Body, type: rich-text }
       - { name: image, label: "Thumbnail / social preview image", type: image, required: false }
+      - { name: encrypted, label: "Encrypted (body is ciphertext, set via bin/encrypt-post.rb)", type: boolean, required: false }
+      - { name: encrypted_prompt, label: "Decrypt box message (shown above the flag input)", type: string, required: false }

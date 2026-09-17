@@ -2,7 +2,7 @@
 title: "LiquidFiles PrivEsc (CVE-2021-43397)"
 description: "I found and reported a LiquidFiles privilege escalation where a 'User Admin' account could use the admin API to read other users' API keys and self-promote to System Administrator — assigned CVE-2021-43397, fixed in LiquidFiles 3.6.3."
 categories: [cve, pentest]
-thumbnail: /assets/img/liquidfiles_logo.png
+image: /assets/img/liquidfiles_logo.png
 ---
 
 ## Executive summary

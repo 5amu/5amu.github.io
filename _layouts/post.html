@@ -14,8 +14,8 @@
                 {% for c in page.categories %}<span class="tag">{{c}}</span>{% endfor %}
               </div>
             </div>
-            {% if page.thumbnail %}
-            <img class="post-header-thumb" src="{{page.thumbnail | relative_url}}" alt="" />
+            {% if page.image %}
+            <img class="post-header-thumb" src="{{page.image | relative_url}}" alt="" />
             {% endif %}
           </div>
           <div class="content">{{content}}</div>

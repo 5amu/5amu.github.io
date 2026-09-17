@@ -26,9 +26,9 @@
         <ul class="post-list" id="post-list">
           {% for post in site.posts %}
           <li data-url="{{ post.url }}" data-tags="{{ post.categories | join: ' ' }}">
-            {% if post.thumbnail %}
+            {% if post.image %}
             <a href="{{site.baseurl}}{{post.url}}" class="post-thumb">
-              <img src="{{post.thumbnail | relative_url}}" alt="" loading="lazy" />
+              <img src="{{post.image | relative_url}}" alt="" loading="lazy" />
             </a>
             {% endif %}
             <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>

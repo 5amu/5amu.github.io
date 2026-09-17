@@ -34,4 +34,15 @@ defaults:
     values:
       layout: "post"
       permalink: /p/:title/
+  # jekyll-seo-tag only reads page.image (no fallback to site.logo), so the
+  # avatar is duplicated here to make it the og:image/twitter:image on the
+  # homepage and about page — otherwise link previews show no image at all.
+  - scope:
+      path: "index.md"
+    values:
+      image: "https://avatars.githubusercontent.com/u/39925709?v=4"
+  - scope:
+      path: "about.md"
+    values:
+      image: "https://avatars.githubusercontent.com/u/39925709?v=4"
 exclude: ["sitemap.xml", "feed.xml", "LICENSE", "README.md", "CLAUDE.md", "Gemfile", "Gemfile.lock"]

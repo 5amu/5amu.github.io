@@ -2,7 +2,7 @@
 title: "PolyglotBin vs Windows Defender"
 description: "Tests whether Windows Defender detects malware (netcat, a keylogger, plink, PwDump) hidden inside binary polyglots — PDF, ZIP, ISO, TAR, RAR, 7z, ARJ, PCAP — built with Ange Albertini's mitra tool; a few combinations evaded detection entirely."
 categories: [red, research]
-thumbnail: /assets/img/polyglot_icon.png
+image: /assets/img/polyglot_icon.png
 ---
 
 Yesterday I saw this video from [LiveOverflow](https://twitter.com/liveoverflow):

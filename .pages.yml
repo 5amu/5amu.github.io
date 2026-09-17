@@ -8,4 +8,4 @@ content:
       fields: [ date, categories ]
     fields:
       - { name: body, label: Body, type: rich-text }
-      - { name: thumbnail, label: Thumbnail, type: image, required: false }
+      - { name: image, label: "Thumbnail / social preview image", type: image, required: false }

@@ -4,7 +4,7 @@ description: "Progress notes on GoAD, my from-scratch Go rewrite of NetExec/Crac
 categories:
   - dev
   - ad
-thumbnail: /assets/img/goad_logo.png
+image: /assets/img/goad_logo.png
 ---
 > **Update, April 2026:** [mandiant/gopacket](https://github.com/mandiant/gopacket) just dropped — a complete Go port of impacket, 63 CLI tools and 24 libraries, single dependency-free binary. Everything I hand-rolled below to fill that exact gap is now more or less redundant 🙂. Leaving the post up as a record of the "before" times.
 

@@ -4,7 +4,7 @@ description: "I extended Nuclei v3's JavaScript protocol by adding SSH, Kerberos
 categories:
   - dev
   - ad
-thumbnail: /assets/img/nuclei_avatar.jpg
+image: /assets/img/nuclei_avatar.jpg
 ---
 [Nuclei](https://github.com/projectdiscovery/nuclei) automates security assessments. Give it a yaml _template_ and it will spit out an answer telling you if the vulnerability defined in the template was found on the scope you selected. **Nuclei is as good as the templates that runs**.
 

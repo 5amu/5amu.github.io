@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include head.html %}
+  <body>
+    <div class="wrap">
+      {% include header.html %}
+      <main>
+        <section class="hero">
+          <div class="hero-head">
+            <img class="hero-avatar" src="{{site.data.author.dp}}" alt="{{site.data.author.name}}" />
+            <div>
+              <h1>{{site.data.author.name}}</h1>
+              <p class="hero-role">{{site.data.author.description | strip_html}}</p>
+            </div>
+          </div>
+          <div class="content">{{content}}</div>
+          <p class="hero-actions">
+            <a class="button" href="{{site.baseurl}}/blog/">read the blog</a>
+            <span class="hero-contact">
+              {% for i in site.data.author.contact %}<a href="{{i.url}}" target="_blank" rel="noopener">{{i.title}}</a>{% unless forloop.last %} · {% endunless %}{% endfor %}
+            </span>
+          </p>
+        </section>
+
+        <section class="home-section">
+          <h2>Latest writing</h2>
+          <ul class="post-list">
+            {% for post in site.posts limit: 3 %}
+            <li>
+              {% if post.image %}
+              <a href="{{site.baseurl}}{{post.url}}" class="post-thumb">
+                <img src="{{post.image | relative_url}}" alt="" loading="lazy" />
+              </a>
+              {% endif %}
+              <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
+              <span class="post-title"><a href="{{site.baseurl}}{{post.url}}">{{post.title}}</a></span>
+            </li>
+            {% endfor %}
+          </ul>
+          <p class="section-more"><a href="{{site.baseurl}}/blog/">all posts &rarr;</a></p>
+        </section>
+      </main>
+      {% include footer.html %}
+    </div>
+  </body>
+</html>

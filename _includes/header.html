@@ -1,6 +1,7 @@
 <header>
   <div class="header-top">
-    <a class="site-title" href="{{site.baseurl}}/">{{site.title}}</a>
+    {% if page.prompt %}{% assign prompt = page.prompt %}{% elsif page.collection == "posts" %}{% capture prompt %}5amu:~/blog/p/{{ page.slug }}$ cd ../..{% endcapture %}{% else %}{% assign prompt = site.title %}{% endif %}
+    <a class="site-title" href="{{site.baseurl}}/">{{ prompt }}</a>
     <button
       id="theme-toggle"
       class="theme-toggle"
@@ -35,10 +36,10 @@
   </div>
   <nav>
     <a href="{{site.baseurl}}/">home</a>
-    <a href="{{site.baseurl}}/about/">about</a>
+    <a href="{{site.baseurl}}/blog/">blog</a>
   </nav>
 </header>
-{% include bio.html %}
+{% unless page.layout == "home" %}{% include bio.html %}{% endunless %}
 <script>
   (function () {
     var btn = document.getElementById("theme-toggle");

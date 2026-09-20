@@ -4,11 +4,11 @@
 
 > {{ site.description }}
 
-Written by {{ site.data.author.name }}, {{ site.data.author.description | strip_html }}.
+Site of {{ site.data.author.name }}, {{ site.data.author.description | strip_html }}.
 
-## About
+## Pages
 
-- [About]({{ site.url }}{{ site.baseurl }}/about/): Background, role, and contact links.
+- [Blog]({{ site.url }}{{ site.baseurl }}/blog/): Searchable list of all posts.
 
 ## Posts
 {% for post in site.posts %}

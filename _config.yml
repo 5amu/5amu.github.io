@@ -1,5 +1,5 @@
-title: "5amu@blog:~$"
-description: "Valerio Casalino's blog on offensive security, vulnerability management, and cybersecurity research."
+title: "5amu:~$"
+description: "Valerio Casalino: offensive security, vulnerability management and cybersecurity research."
 markdown: kramdown
 url: "https://5amu.github.io"
 baseurl: ""
@@ -8,12 +8,12 @@ baseurl: ""
 author:
   name: Valerio Casalino
   email: casalinovalerio.cv [at] gmail.com
-  url: "https://5amu.github.io/about/"
+  url: "https://5amu.github.io/"
 
 # used by jekyll-seo-tag for Organization/publisher logo on BlogPosting JSON-LD
 logo: "https://avatars.githubusercontent.com/u/39925709?v=4"
 
-# used by jekyll-seo-tag for the homepage/about-page JSON-LD entity (name + sameAs)
+# used by jekyll-seo-tag for the homepage JSON-LD entity (name + sameAs)
 social:
   name: Valerio Casalino
   links:
@@ -33,16 +33,16 @@ defaults:
       path: "_posts"
     values:
       layout: "post"
-      permalink: /p/:title/
+      permalink: /blog/:title/
   # jekyll-seo-tag only reads page.image (no fallback to site.logo), so the
   # avatar is duplicated here to make it the og:image/twitter:image on the
-  # homepage and about page — otherwise link previews show no image at all.
+  # homepage and blog page — otherwise link previews show no image at all.
   - scope:
       path: "index.md"
     values:
       image: "https://avatars.githubusercontent.com/u/39925709?v=4"
   - scope:
-      path: "about.md"
+      path: "blog.md"
     values:
       image: "https://avatars.githubusercontent.com/u/39925709?v=4"
 exclude: ["sitemap.xml", "feed.xml", "LICENSE", "README.md", "CLAUDE.md", "Gemfile", "Gemfile.lock"]

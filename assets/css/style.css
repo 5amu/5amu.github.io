@@ -555,6 +555,14 @@ ul.post-list .tags .tag.active {
 .content th {
   background: var(--bg-alt);
 }
+/* wide tables scroll inside their own box on phones instead of pushing the
+   whole page sideways (display:block is what lets overflow-x apply) */
+@media (max-width: 600px) {
+  .content table {
+    display: block;
+    overflow-x: auto;
+  }
+}
 
 .mermaid {
   margin: 1.6em 0;

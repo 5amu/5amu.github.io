@@ -3,7 +3,8 @@ title: "Forecasting WAF Traffic Peaks: SARIMA, and Why It Isn't Enough"
 description: "Can a seasonal ARIMA model running on WAF logs predict legitimate traffic peaks and attack peaks for a home banking platform around pension days, paydays and holidays? A backtest on synthetic data shows where SARIMA breaks, and proposes a calendar-aware regression with ARIMA errors plus a negative binomial model for attack traffic instead."
 categories:
   - research
-  - waf
+  - blue
+image: /assets/img/waf-forecast-icon.png
 ---
 > **TL;DR** — SARIMA is a good *first* idea for forecasting WAF traffic, but
 > the peaks a bank cares about (pension day, payday, tax deadlines,

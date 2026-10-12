@@ -1,0 +1,114 @@
+# The interview agent skill: the SKILL.md served to `npx skills add`
+# (see skills/interview/). The page there carries the human-facing title and
+# summary; this file holds only what goes into SKILL.md.
+# description: the trigger text agents read to decide when to use the skill.
+# body: the Markdown instructions, served verbatim (data files get no Liquid
+#   and no Markdown conversion). Keep the two-space indent on every line.
+description: "Interview the user about a plan, design or idea in rounds of up to four multiple-choice questions, each with a recommended answer, one or two alternatives and a write-your-own option, until every decision is settled, then write the result to docs/PROJECT.md. Use when the user asks to be interviewed or grilled, wants to stress-test or sharpen a plan before building it, or wants a PROJECT.md written from a discussion."
+body: |
+  # Interview
+
+  Interview the user about a plan, design or idea until the two of you share an understanding of it. Then write that understanding to `docs/PROJECT.md`.
+
+  ## Before the first round
+
+  - Read what already exists: `docs/PROJECT.md`, `CONTEXT.md`, `docs/adr/`, the README, and the code the plan touches. Never ask the user something these already answer.
+  - If `docs/PROJECT.md` exists, this interview updates it. Note which parts of it the plan changes.
+
+  ## The design tree
+
+  Map the plan as a design tree: every decision branches into the decisions that depend on it. The **frontier** is every open decision whose prerequisites are settled, the questions you can ask now without guessing at answers you haven't heard yet.
+
+  ## Rounds
+
+  Work in rounds. A round is at most **four questions**, taken from the frontier. Pick the ones whose answers unblock the most of the tree and leave the rest for later rounds. A question that depends on another question in the same round belongs to a later round.
+
+  Every question offers, in this order:
+
+  1. **Your recommended answer**, with a one-line reason.
+  2. **One or two alternatives** that are real choices, each with its trade-off. Offer one when only one makes sense; never pad with rewordings of the recommendation.
+  3. **Write your own answer.**
+
+  If your agent has a multiple-choice question tool (in Claude Code, `AskUserQuestion`), ask the whole round in one call: one entry per question, the recommended option first with "(Recommended)" at the end of its label, the alternatives after it. That tool adds the free-text answer itself, so don't add one.
+
+  Otherwise, write the round as text and stop:
+
+  ```
+  ### Round 2
+
+  **Q1. <short title>.** <the question, with the context needed to answer it>
+
+  - **A. <recommended answer> (recommended):** <why>
+  - **B. <alternative>:** <trade-off>
+  - **C. <alternative>:** <trade-off>
+  - **D. Write your own answer**
+
+  ---
+
+  **Q2. <short title>.** ...
+  ```
+
+  The user can reply tersely ("Q1 A, Q2 D: ..."). Wait for the answers before the next round.
+
+  After each round, recompute the frontier. Answers settle decisions and unblock the ones that hung off them. When an answer contradicts an earlier one, put the conflict to the user in the next round instead of picking a side yourself.
+
+  ## Facts are yours, decisions are theirs
+
+  When a question needs a fact from the environment (code, config, docs, tool output), find it yourself, with a sub-agent if you have them. Don't hold the round for it: only the questions that depend on that fact wait, and the rest of the frontier goes out now. Decisions belong to the user. Put each one to them, even when your recommendation looks obvious.
+
+  ## Pin down the language
+
+  - When the user uses a vague or overloaded term, propose a precise one: "You're saying 'account': the Customer or the User?"
+  - When a term conflicts with `CONTEXT.md` or with an earlier answer, say so: "Earlier 'cancel' meant the whole order, now it sounds like a single item. Which is it?"
+  - Test relationships with concrete scenarios that probe the edge cases, so the boundaries between concepts get settled.
+  - When the user says how something works, check whether the code agrees and raise any contradiction.
+
+  Keep a running list of resolved terms and settled decisions. Both go into `PROJECT.md`.
+
+  ## Ending the interview
+
+  The interview is done when the frontier is empty: every branch visited, nothing silently assumed. Summarize the plan in a few lines and ask the user to confirm it or correct it. Once they confirm, write `docs/PROJECT.md`, creating `docs/` if needed. Don't start building the plan until the user asks.
+
+  ## docs/PROJECT.md
+
+  ```md
+  # <Project name>
+
+  <Two or three sentences: what it is, who it's for, why it exists.>
+
+  ## Goals
+
+  - <what it must do>
+
+  ## Non-goals
+
+  - <what was explicitly ruled out>
+
+  ## Glossary
+
+  **<Term>**: <one or two sentences on what it is>
+  _Avoid_: <synonyms not to use>
+
+  ## Decisions
+
+  ### <Decision>
+
+  <What was decided and why. Mention a rejected alternative only when the rejection isn't obvious.>
+
+  ## Constraints
+
+  - <limits that come from outside the code: compliance, budget, partner contracts, deadlines>
+
+  ## Open questions
+
+  - <anything the user deferred, and what it blocks>
+  ```
+
+  - Write only what the interview settled or the code shows. Never invent requirements, numbers, dates or names to fill a section.
+  - Leave out empty sections.
+  - Glossary terms are specific to this project: no general programming concepts, no implementation details.
+  - Give every decision its reasoning when it's hard to reverse or would surprise a future reader. One line is enough for the rest.
+  - When updating an existing `PROJECT.md`, keep what's still true, change what the interview changed, and tell the user what changed.
+  - If the repo already keeps a `CONTEXT.md` glossary or `docs/adr/` decision records, add the new terms and decisions there too, in the format they already use.
+
+  Adapted from Matt Pocock's grilling, grill-me and grill-with-docs skills (github.com/mattpocock/skills, MIT).

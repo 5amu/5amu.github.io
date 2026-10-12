@@ -1,0 +1,5 @@
+---
+layout: skill-md
+skill: interview
+permalink: /skills/interview/.well-known/agent-skills/interview/SKILL.md
+---

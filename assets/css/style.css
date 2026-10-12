@@ -895,16 +895,19 @@ ul.post-grid {
   gap: 6px;
   margin-top: 12px;
 }
-.post-card-tags button.tag {
+.post-card-tags button.tag,
+.skill-card-tags button.tag {
   cursor: pointer;
 }
 .post-card-tags button.tag:hover,
-.post-card-tags button.tag.active {
+.post-card-tags button.tag.active,
+.skill-card-tags button.tag:hover,
+.skill-card-tags button.tag.active {
   color: var(--on-cta);
   background: var(--cta);
 }
 
-/* blog index: search + tag filter */
+/* blog and skills index: search + tag filter */
 .search-box {
   margin-bottom: 18px;
 }
@@ -1137,19 +1140,6 @@ article > .content {
 }
 
 /* skills: catalogue (/skills/) and skill pages (/skills/<name>/) */
-.skills-intro {
-  max-width: 68ch;
-  margin-bottom: 32px;
-}
-.skills-intro > :first-child {
-  margin-top: 0;
-}
-.skills-intro > :last-child {
-  margin-bottom: 0;
-}
-.skills-intro code {
-  font-size: 0.9em;
-}
 ul.skill-list {
   display: grid;
   /* minmax(0, ...) so the no-wrap install command scrolls instead of
@@ -1186,6 +1176,12 @@ ul.skill-list {
 }
 .skill-card .skill-card-desc {
   color: var(--muted);
+}
+.skill-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
 }
 .skill-hero .skill-card-desc {
   margin-top: 0;
@@ -1243,6 +1239,21 @@ ul.skill-list {
 .skill-copy.is-done {
   color: var(--paper);
   background: var(--ink);
+}
+.back-nav {
+  margin: 0 0 28px;
+}
+.back-nav-bottom {
+  margin: 36px 0 0;
+}
+.back-nav .button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.back-nav .icon {
+  width: 1.2em;
+  height: 1.2em;
 }
 .skill-links {
   display: flex;

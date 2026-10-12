@@ -1,0 +1,22 @@
+{% comment %}
+  Search box + tag filter buttons above a filterable list; the matching
+  behaviour is list-filter-script.html. Params: label (the input's hidden
+  label), placeholder, tags (array of tag names, already sorted).
+{% endcomment %}
+        <div class="search-box">
+          <label class="visually-hidden" for="search-input">{{ include.label }}</label>
+          <input
+            type="search"
+            id="search-input"
+            placeholder="{{ include.placeholder }}"
+            autocomplete="off"
+          />
+        </div>
+        {% if include.tags.size > 0 %}
+        <div class="tag-filter" id="tag-filter">
+          {% for tag in include.tags %}
+          <button type="button" class="tag-filter-btn" data-tag="{{ tag }}" aria-pressed="false">#{{ tag }}</button>
+          {% endfor %}
+          <button type="button" class="tag-filter-clear" id="tag-filter-clear" hidden>clear</button>
+        </div>
+        {% endif %}

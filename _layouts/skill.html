@@ -14,10 +14,11 @@
       {% assign first_two = first_line | slice: 0, 2 %}
       {% if first_two == "# " %}{% assign skill_body = skill_body | remove_first: first_line %}{% endif %}
       <main>
+        <p class="back-nav"><a class="button" href="{{ '/skills/' | relative_url }}">{% include icon.html name="arrow-left" %} back to skills</a></p>
         <article>
           <div class="post-header">
             <div class="post-header-text">
-              <div class="post-tags"><span class="tag">#skill</span></div>
+              <div class="post-tags"><span class="tag">#skill</span>{% for t in page.tags %}<span class="tag">#{{ t }}</span>{% endfor %}</div>
               <h1>{{ page.title }}</h1>
             </div>
           </div>
@@ -26,7 +27,6 @@
             {% include skill-install.html name=page.skill %}
             <p class="skill-links">
               <a href="{{ page.url | relative_url }}.well-known/agent-skills/{{ page.skill }}/SKILL.md">raw SKILL.md</a>
-              <a href="{{ '/skills/' | relative_url }}">all skills</a>
             </p>
           </div>
           {% comment %}
@@ -41,6 +41,7 @@
           {% assign skill_html = skill_html | replace: "zqlsquoq", "‘" | replace: "zqrsquoq", "’" | replace: "zqldquoq", "“" | replace: "zqrdquoq", "”" | replace: "zqhellipq", "…" | replace: "zqndashq", "–" | replace: "zqmdashq", "—" %}
           <div class="card content skill-body">{{ skill_html }}</div>
         </article>
+        <p class="back-nav back-nav-bottom"><a class="button" href="{{ '/skills/' | relative_url }}">{% include icon.html name="arrow-left" %} back to skills</a></p>
       </main>
     </div>
     {% include footer.html %}

@@ -1,0 +1,98 @@
+{% comment %}
+  Filters a list by the list-filter.html search box and tag buttons.
+  Params: list (id of the <ul>), index (optional: a JSON array of
+  {url, title, categories, content} to search full text, like search.json).
+  Each <li> needs data-url and data-tags (space-separated); without an index
+  it's matched on its data-search attribute, else its visible text. Any
+  [data-tag] button on the page toggles that tag. Needs #search-empty.
+{% endcomment %}
+    <script>
+      (function () {
+        var input = document.getElementById("search-input");
+        var items = Array.prototype.slice.call(document.querySelectorAll("#{{ include.list }} li"));
+        var empty = document.getElementById("search-empty");
+        var clearBtn = document.getElementById("tag-filter-clear");
+        var index = null;
+        var selectedTags = [];
+
+        function normalize(s) {
+          return (s || "").toLowerCase();
+        }
+        {% if include.index %}
+        fetch("{{ include.index | relative_url }}")
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            index = {};
+            data.forEach(function (post) {
+              index[post.url] = normalize(
+                [post.title, (post.categories || []).join(" "), post.content].join(" ")
+              );
+            });
+          })
+          .catch(function () {
+            // search index unavailable, fall back to matching visible text only
+          });
+        {% endif %}
+        function isSelected(tag) {
+          return selectedTags.indexOf(tag) !== -1;
+        }
+
+        function toggleTag(tag) {
+          var i = selectedTags.indexOf(tag);
+          if (i === -1) {
+            selectedTags.push(tag);
+          } else {
+            selectedTags.splice(i, 1);
+          }
+          syncTagButtons();
+          applyFilters();
+        }
+
+        function syncTagButtons() {
+          var buttons = document.querySelectorAll("[data-tag]");
+          buttons.forEach(function (btn) {
+            var active = isSelected(btn.getAttribute("data-tag"));
+            btn.classList.toggle("active", active);
+            btn.setAttribute("aria-pressed", active ? "true" : "false");
+          });
+          if (clearBtn) clearBtn.hidden = selectedTags.length === 0;
+        }
+
+        function applyFilters() {
+          var terms = normalize(input.value).trim().split(/\s+/).filter(Boolean);
+          var visibleCount = 0;
+
+          items.forEach(function (li) {
+            var url = li.getAttribute("data-url");
+            var haystack = index && index[url]
+              ? index[url]
+              : normalize(li.getAttribute("data-search") || li.textContent);
+            var textMatches = terms.every(function (t) { return haystack.indexOf(t) !== -1; });
+
+            var itemTags = (li.getAttribute("data-tags") || "").split(/\s+/).filter(Boolean);
+            var tagMatches = selectedTags.every(function (t) { return itemTags.indexOf(t) !== -1; });
+
+            var matches = textMatches && tagMatches;
+            li.style.display = matches ? "" : "none";
+            if (matches) visibleCount++;
+          });
+
+          empty.style.display = (terms.length || selectedTags.length) && visibleCount === 0 ? "" : "none";
+        }
+
+        input.addEventListener("input", applyFilters);
+
+        document.addEventListener("click", function (e) {
+          var btn = e.target.closest("[data-tag]");
+          if (btn) toggleTag(btn.getAttribute("data-tag"));
+        });
+
+        if (clearBtn) {
+          clearBtn.addEventListener("click", function () {
+            selectedTags = [];
+            syncTagButtons();
+            applyFilters();
+          });
+        }
+      })();
+    </script>

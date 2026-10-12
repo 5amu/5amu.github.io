@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" fill="#e2ded4"/>
+  <!-- hard offset shadow -->
+  <rect x="124" y="156" width="800" height="760" fill="#1c1c1c"/>
+  <!-- paper card -->
+  <rect x="96" y="128" width="800" height="760" fill="#efece5" stroke="#1c1c1c" stroke-width="10"/>
+  <g font-family="IBM Plex Mono" fill="#1c1c1c">
+    <text x="156" y="248" font-size="54" font-weight="500">5amu:~$ ls skills/</text>
+  </g>
+  <g font-family="Space Grotesk" font-weight="700" font-size="138">
+    <text x="166" y="430" fill="#0f6b52">unslop/</text>
+    <text x="156" y="420" fill="#1c1c1c">unslop/</text>
+    <text x="166" y="600" fill="#0f6b52">interview/</text>
+    <text x="156" y="590" fill="#1c1c1c">interview/</text>
+  </g>
+  <g font-family="IBM Plex Mono" fill="#1c1c1c">
+    <text x="156" y="790" font-size="54" font-weight="500">5amu:~$</text>
+    <rect x="406" y="744" width="34" height="60" fill="#0f6b52"/>
+  </g>
+</svg>

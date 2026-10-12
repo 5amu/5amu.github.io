@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <!-- actual traffic: weekly sawtooth with the pension-day spike -->
+    <polyline id="actual" fill="none" stroke-linejoin="round" stroke-linecap="round"
+      points="80,600 170,460 260,630 350,470 430,610 500,150 570,610 650,460 740,630 830,470 940,600"/>
+    <!-- SARIMA forecast: repeats the week, misses the spike -->
+    <polyline id="sarima" fill="none" stroke-linejoin="round" stroke-linecap="round"
+      points="80,760 170,630 260,790 350,640 440,780 540,640 640,780 740,630 830,790 940,660"/>
+    <line id="axis" x1="80" y1="900" x2="940" y2="900" stroke-linecap="round"/>
+  </defs>
+  <!-- sticker outline -->
+  <g stroke="#ffffff" stroke-width="120" stroke-linejoin="round" stroke-linecap="round">
+    <use href="#actual"/><use href="#sarima"/><use href="#axis"/>
+    <circle cx="500" cy="150" r="60"/>
+  </g>
+  <use href="#axis" stroke="#1c1c1c" stroke-width="34"/>
+  <use href="#sarima" stroke="#0f6b52" stroke-width="34" stroke-dasharray="48 40"/>
+  <use href="#actual" stroke="#1c1c1c" stroke-width="58"/>
+  <circle cx="500" cy="150" r="64" fill="#eb6834" stroke="#1c1c1c" stroke-width="22"/>
+</svg>

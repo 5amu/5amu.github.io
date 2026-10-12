@@ -14,7 +14,7 @@
             <img class="hero-portrait reveal" style="--i: 1" src="{{site.data.author.dp}}" alt="{{site.data.author.name}}" width="168" height="168" />
           </div>
           <div class="card hero-card reveal" style="--i: 2">
-            <p class="hero-cmd"><span class="hero-cmd-prompt">{{ site.title }}</span> whoami</p>
+            <p class="hero-cmd"><span class="hero-cmd-prompt">{{ site.title }}</span> cat whoami.txt</p>
             <div class="content hero-intro">{{content}}</div>
             <div class="hero-actions">
               <a class="button" href="{{site.baseurl}}/blog/">read the blog <span aria-hidden="true">&rarr;</span></a>
@@ -24,6 +24,52 @@
             </div>
           </div>
         </section>
+
+        {% comment %}
+          Experience is ordered by end date, oldest left; no `end` (ongoing)
+          sorts last. Ties break on start date, then on position in the
+          file. Liquid's sort isn't stable, so build a unique string key per
+          entry ("end|start|index") and sort those instead of the objects.
+        {% endcomment %}
+        {% assign jobs = site.data.experience %}
+        {% assign job_keys = "" | split: "" %}
+        {% for job in jobs %}
+          {% assign job_end = job.end | default: "9999-99" %}
+          {% assign job_start = job.start | default: "0000-00" %}
+          {% capture job_index %}000{{ forloop.index0 }}{% endcapture %}
+          {% capture job_key %}{{ job_end }}|{{ job_start }}|{{ job_index | slice: -3, 3 }}{% endcapture %}
+          {% assign job_keys = job_keys | push: job_key %}
+        {% endfor %}
+        {% assign job_keys = job_keys | sort %}
+        {% if jobs.size > 0 %}
+        <section class="home-section experience" aria-labelledby="experience-title">
+          <div class="section-head">
+            <h2 class="section-title" id="experience-title">Experience</h2>
+            <div class="timeline-nav" hidden>
+              <button type="button" class="timeline-btn" data-step="-1" aria-label="Earlier position">{% include icon.html name="arrow-left" %}</button>
+              <button type="button" class="timeline-btn" data-step="1" aria-label="Later position">{% include icon.html name="arrow-right" %}</button>
+            </div>
+          </div>
+          <div class="timeline" tabindex="0" role="region" aria-label="Experience, oldest to most recent">
+            <ol class="timeline-track">
+              {% for job_key in job_keys %}
+              {% assign job_index = job_key | split: "|" | last | plus: 0 %}
+              {% assign job = jobs[job_index] %}
+              <li class="timeline-item{% unless job.end %} is-current{% endunless %}">
+                <div class="timeline-card">
+                  {% if job.logo %}<img class="timeline-logo" src="{{ job.logo | relative_url }}" alt="" width="48" height="48" />{% endif %}
+                  <div class="timeline-body">
+                  <p class="timeline-period">{% if job.start %}<time datetime="{{ job.start }}">{{ job.start | append: "-01" | date: "%b %Y" }}</time> - {% endif %}{% if job.end %}<time datetime="{{ job.end }}">{{ job.end | append: "-01" | date: "%b %Y" }}</time>{% else %}present{% endif %}</p>
+                  <h3 class="timeline-role">{{ job.role }}</h3>
+                  <p class="timeline-company">{% if job.url %}<a href="{{ job.url }}" target="_blank" rel="noopener">{{ job.company }}</a>{% else %}{{ job.company }}{% endif %}</p>
+                  </div>
+                </div>
+              </li>
+              {% endfor %}
+            </ol>
+          </div>
+        </section>
+        {% endif %}
 
         <section class="home-section">
           <h2 class="section-title">Latest writing</h2>
@@ -37,5 +83,78 @@
       </main>
     </div>
     {% include footer.html %}
+    <script>
+      // Experience timeline: the card sitting at the right edge of the track
+      // is "active" (full color), the rest are grayed out by CSS. Starts on
+      // the right-most card, the current position.
+      (function () {
+        var timeline = document.querySelector(".timeline");
+        if (!timeline) return;
+        var items = Array.prototype.slice.call(timeline.querySelectorAll(".timeline-item"));
+        if (!items.length) return;
+        var nav = document.querySelector(".timeline-nav");
+        var buttons = nav ? Array.prototype.slice.call(nav.querySelectorAll("[data-step]")) : [];
+        var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var active = -1;
+
+        function setActive(i) {
+          if (i === active) return;
+          active = i;
+          items.forEach(function (item, j) {
+            item.classList.toggle("is-active", j === i);
+          });
+          buttons.forEach(function (btn) {
+            var target = active + Number(btn.getAttribute("data-step"));
+            btn.disabled = target < 0 || target >= items.length;
+          });
+        }
+
+        // scroll so card i sits at the right edge (where it snaps)
+        function bringToEdge(i, smooth) {
+          var item = items[i];
+          var edgePadding = parseFloat(getComputedStyle(timeline).scrollPaddingInlineEnd) || 0;
+          timeline.scrollTo({
+            left: item.offsetLeft + item.offsetWidth + edgePadding - timeline.clientWidth,
+            behavior: smooth && !reduceMotion ? "smooth" : "auto",
+          });
+        }
+
+        bringToEdge(items.length - 1, false);
+        setActive(items.length - 1);
+        timeline.classList.add("is-ready");
+
+        if ("IntersectionObserver" in window) {
+          // a thin strip near the right edge of the track: whatever card is
+          // crossing it is the highlighted one
+          var observer = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) setActive(items.indexOf(entry.target));
+              });
+            },
+            { root: timeline, rootMargin: "0px -10% 0px -88%", threshold: 0 }
+          );
+          items.forEach(function (item) {
+            observer.observe(item);
+          });
+        }
+
+        items.forEach(function (item, i) {
+          item.addEventListener("click", function () {
+            if (i !== active) bringToEdge(i, true);
+          });
+        });
+
+        if (nav && items.length > 1) {
+          nav.hidden = false;
+          buttons.forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              var target = active + Number(btn.getAttribute("data-step"));
+              if (target >= 0 && target < items.length) bringToEdge(target, true);
+            });
+          });
+        }
+      })();
+    </script>
   </body>
 </html>

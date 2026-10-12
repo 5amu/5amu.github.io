@@ -1,0 +1,65 @@
+# Experience timeline on the homepage. Shown left to right ordered by END
+# date (no `end` = ongoing, sorts last), ties broken by start date and then
+# by order in this file. It opens scrolled to the right-most card, so the
+# current main position is the ongoing one with the latest start.
+#
+#   - role: Job title                    (required)
+#     company: Company name              (required)
+#     url: https://company.example       (optional, links the company)
+#     logo: /assets/img/logos/x.png      (optional, square-ish; shown on a white tile)
+#     start: "2021-03"                   (YYYY-MM, quoted; shown as "Mar 2021")
+#     end: "2023-06"                     (YYYY-MM, quoted; omit = present)
+
+- role: Student Internship
+  company: Spike Reply
+  url: https://www.reply.com/spike-reply/en
+  logo: /assets/img/logos/spike-reply.svg
+  start: "2019-03"
+  end: "2019-05"
+
+- role: Security Analyst
+  company: BIP
+  url: https://www.bip-group.it/
+  logo: /assets/img/logos/bip.svg
+  start: "2020-12"
+  end: "2022-03"
+
+- role: Security Consultant
+  company: BIP
+  url: https://www.bip-group.it/
+  logo: /assets/img/logos/bip.svg
+  start: "2022-04"
+  end: "2023-07"
+
+- role: Senior Security Consultant
+  company: Aspisec
+  url: https://www.aspisec.com/
+  logo: /assets/img/logos/aspisec.png
+  start: "2023-07"
+  end: "2025-06"
+
+- role: "Co-Founder & CEO"
+  company: Asuba
+  url: https://www.asuba.it/
+  logo: /assets/img/logos/asuba.svg
+  start: "2025-02"
+
+- role: Cyber Security Instructor
+  company: EPICODE Institute of Technology
+  url: https://epicode.com/it/
+  logo: /assets/img/logos/epicode.png
+  start: "2025-07"
+  end: "2025-12"
+
+- role: Cybersecurity Specialist
+  company: Allitude
+  url: https://allitude.it/
+  logo: /assets/img/logos/allitude.png
+  start: "2025-07"
+  end: "2025-12"
+
+- role: Red Team and Vulnerability Management Lead
+  company: Allitude
+  url: https://allitude.it/
+  logo: /assets/img/logos/allitude.png
+  start: "2026-01"

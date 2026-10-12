@@ -549,6 +549,204 @@ main.no-bio {
   margin-top: 72px;
 }
 
+/* experience timeline: horizontal scroll-snap track, oldest on the left,
+   cards snapping to the right edge. The card sitting at the right edge is
+   highlighted (set by the script in home.html; it starts on the current
+   position, the right-most card); once the script runs (.is-ready) the
+   others go gray. */
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.section-head .section-title {
+  margin-bottom: 0;
+}
+.timeline-nav {
+  display: flex;
+  gap: 10px;
+  padding-bottom: 6px;
+}
+/* shown by the script only when there's more than one position */
+.timeline-nav[hidden] {
+  display: none;
+}
+.timeline-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: var(--ink);
+  background: var(--paper);
+  border: 2px solid var(--line);
+  box-shadow: 3px 3px 0 0 var(--drop);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.timeline-btn .icon {
+  width: 18px;
+  height: 18px;
+}
+.timeline-btn:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 0 var(--drop);
+}
+.timeline-btn:active:not(:disabled) {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 0 var(--drop);
+}
+.timeline-btn:disabled {
+  cursor: default;
+  opacity: 0.35;
+  box-shadow: none;
+}
+
+.timeline {
+  --card: min(320px, 76vw);
+  --gap: 22px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  /* room for the snapped card's hard shadow */
+  scroll-padding-inline-end: 10px;
+  /* no visible scrollbar: it still scrolls by touch, trackpad, shift+wheel,
+     keyboard (the track is focusable) and the arrow buttons */
+  scrollbar-width: none;
+  /* 100cqw in the track's padding is this box's width */
+  container-type: inline-size;
+  /* older cards dissolve into the left edge */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 56px);
+  mask-image: linear-gradient(to right, transparent, #000 56px);
+}
+.timeline::-webkit-scrollbar {
+  display: none;
+}
+.timeline:focus-visible {
+  outline-offset: 4px;
+}
+.timeline-track {
+  position: relative;
+  display: flex;
+  gap: var(--gap);
+  width: max-content;
+  margin: 0;
+  /* left padding lets even the oldest card reach the right edge */
+  padding: 8px 10px 22px calc(100cqw - var(--card) - 10px);
+  list-style: none;
+}
+.timeline-item {
+  position: relative;
+  flex: 0 0 var(--card);
+  padding-top: 30px;
+  scroll-snap-align: end;
+}
+/* lead-in before the oldest card: the rail continues left to the track's
+   edge as a dotted line (square dots, like the nodes), ending under the
+   first node. Its width is the track's left padding plus half a card. */
+.timeline-track::before {
+  content: "";
+  position: absolute;
+  top: calc(8px + 9px);
+  left: 0;
+  width: calc(100cqw - 10px - var(--card) / 2);
+  height: var(--bw);
+  background: repeating-linear-gradient(
+    to left,
+    var(--line) 0 5px,
+    transparent 5px 11px
+  );
+}
+/* the rail: a node above each card, joined to the next one */
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 2px;
+  left: calc(50% - 8px);
+  width: 16px;
+  height: 16px;
+  background: var(--paper);
+  border: var(--bw) solid var(--line);
+  transition: background 0.3s ease;
+}
+.timeline-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 9px;
+  left: 50%;
+  width: calc(100% + var(--gap));
+  border-top: var(--bw) solid var(--line);
+}
+.timeline-item.is-current::before {
+  background: var(--cta);
+}
+.timeline-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  height: 100%;
+  padding: 20px 22px;
+  background: var(--paper);
+  border: var(--bw) solid var(--line);
+  box-shadow: var(--sh) var(--sh) 0 0 var(--drop);
+  transition: filter 0.35s ease, opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* logos sit on a fixed white plate in both themes: several ship with an
+   opaque white background, and dark-on-transparent marks need it too */
+.timeline-logo {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  padding: 5px;
+  object-fit: contain;
+  background: #fff;
+  border: 2px solid var(--line);
+}
+.timeline-body {
+  min-width: 0;
+}
+.timeline-period {
+  margin: 0;
+  font-size: 0.75em;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+.timeline-role {
+  margin: 6px 0 0;
+  font-family: var(--font-sans);
+  font-size: 1.25em;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.timeline-company {
+  margin: 6px 0 0;
+  font-weight: 700;
+  color: var(--link);
+}
+.timeline.is-ready .timeline-item:not(.is-active) {
+  cursor: pointer;
+}
+.timeline.is-ready .timeline-item:not(.is-active) .timeline-card {
+  filter: grayscale(1);
+  opacity: 0.45;
+}
+.timeline.is-ready .timeline-item:not(.is-active):hover .timeline-card {
+  filter: grayscale(0.4);
+  opacity: 0.8;
+}
+.timeline.is-ready .timeline-item.is-active .timeline-card {
+  transform: translateY(-4px);
+}
+.timeline.is-ready .timeline-item.is-active::before {
+  background: var(--cta);
+}
+
 /* post cards (home + blog index) */
 ul.post-grid {
   display: grid;
@@ -1023,6 +1221,13 @@ article > .content {
   }
   to {
     transform: rotate(var(--tilt));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-card,
+  .timeline-item::before {
+    transition: none;
   }
 }
 

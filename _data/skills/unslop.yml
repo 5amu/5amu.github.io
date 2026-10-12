@@ -4,9 +4,6 @@
 # description: the trigger text agents read to decide when to use the skill.
 # body: the Markdown instructions, served verbatim (data files get no Liquid
 #   and no Markdown conversion). Keep the two-space indent on every line.
-# disable-model-invocation: true makes it manual-only (/unslop), so agents
-#   never load it on their own.
-disable-model-invocation: true
 description: "Remove AI-writing tells and put a human voice back. Use whenever writing or editing prose a person will read: docs, READMEs, blog posts, emails, chat messages, PR and commit descriptions, release notes, UI copy, or any text the user asks to unslop, humanize, de-AI or tighten. Works through 39 numbered patterns, then a mechanical scan before returning."
 body: |
   # Unslop

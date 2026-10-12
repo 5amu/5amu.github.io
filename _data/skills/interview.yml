@@ -4,6 +4,9 @@
 # description: the trigger text agents read to decide when to use the skill.
 # body: the Markdown instructions, served verbatim (data files get no Liquid
 #   and no Markdown conversion). Keep the two-space indent on every line.
+# disable-model-invocation: true makes it manual-only (/interview), so agents
+#   never load it on their own.
+disable-model-invocation: true
 description: "Interview the user about a plan, design or idea in rounds of up to four multiple-choice questions, each with a recommended answer, one or two alternatives and a write-your-own option, until every decision is settled, then write the result to docs/PROJECT.md. Use when the user asks to be interviewed or grilled, wants to stress-test or sharpen a plan before building it, or wants a PROJECT.md written from a discussion."
 body: |
   # Interview

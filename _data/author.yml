@@ -5,8 +5,11 @@ description: <p>Red Team and Vulnerability Management Lead @ Allitude</p>
 email: casalinovalerio.cv@gmail.com
 contact:
   - title: email
+    icon: envelope-simple
     url: mailto:casalinovalerio.cv@gmail.com
   - title: linkedin
+    icon: linkedin-logo
     url: https://www.linkedin.com/in/valerio-casalino
   - title: github
+    icon: github-logo
     url: https://github.com/5amu

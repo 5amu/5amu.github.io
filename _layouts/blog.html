@@ -5,8 +5,9 @@
     <div class="wrap">
       {% include header.html %}
       <main>
-        <hr />
+        <h1 class="page-title">{{ page.title }}</h1>
         <div class="search-box">
+          <label class="visually-hidden" for="search-input">Search posts</label>
           <input
             type="search"
             id="search-input"
@@ -23,26 +24,15 @@
           <button type="button" class="tag-filter-clear" id="tag-filter-clear" hidden>clear</button>
         </div>
         {% endif %}
-        <ul class="post-list" id="post-list">
+        <ul class="post-grid" id="post-list">
           {% for post in site.posts %}
-          <li data-url="{{ post.url }}" data-tags="{{ post.categories | join: ' ' }}">
-            {% if post.image %}
-            <a href="{{site.baseurl}}{{post.url}}" class="post-thumb">
-              <img src="{{post.image | relative_url}}" alt="" loading="lazy" />
-            </a>
-            {% endif %}
-            <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
-            <span class="post-title"><a href="{{site.baseurl}}{{post.url}}">{{post.title}}</a></span>
-            {% if post.categories %}
-            <span class="tags">{% for c in post.categories %}<button type="button" class="tag" data-tag="{{ c }}" aria-pressed="false">#{{ c }}</button>{% endfor %}</span>
-            {% endif %}
-          </li>
+          {% include post-card.html post=post filterable=true %}
           {% endfor %}
         </ul>
         <p id="search-empty">No posts match your search.</p>
       </main>
-      {% include footer.html %}
     </div>
+    {% include footer.html %}
     <script>
       (function () {
         var input = document.getElementById("search-input");

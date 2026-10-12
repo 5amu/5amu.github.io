@@ -8,27 +8,29 @@
         <article>
           <div class="post-header">
             <div class="post-header-text">
+              {% if page.categories.size > 0 %}
+              <p class="post-tags">{% for c in page.categories %}<span class="tag">#{{c}}</span>{% endfor %}</p>
+              {% endif %}
               <h1>{{page.title}}</h1>
-              <div class="post-meta">
-                <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y-%m-%d" }}</time>
-                {% for c in page.categories %}<span class="tag">{{c}}</span>{% endfor %}
-              </div>
+              {% if page.date %}<time class="post-date" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y-%m-%d" }}</time>{% endif %}
             </div>
             {% if page.image %}
             <img class="post-header-thumb" src="{{page.image | relative_url}}" alt="" />
             {% endif %}
           </div>
-          <div class="content">{{content}}</div>
+          <div class="card content">{{content}}</div>
         </article>
-        <p><a href="{{site.baseurl}}/blog/">&larr; back to blog</a></p>
+        <p class="section-more"><a href="{{site.baseurl}}/blog/"><span aria-hidden="true">&larr;</span> back to blog</a></p>
       </main>
-      {% include footer.html %}
     </div>
+    {% include footer.html %}
     <script type="module">
       import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+      var forced = document.documentElement.getAttribute("data-theme");
+      var dark = forced ? forced === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
       mermaid.initialize({
         startOnLoad: true,
-        theme: window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "default",
+        theme: dark ? "dark" : "default",
       });
       document.addEventListener("post:decrypted", () => mermaid.run());
     </script>

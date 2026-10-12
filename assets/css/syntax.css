@@ -4,7 +4,7 @@
   --syn-comment: #6b7280;
   --syn-error: #c0362c;
   --syn-keyword: #9c1c4b;
-  --syn-name: var(--fg);
+  --syn-name: var(--ink);
   --syn-string: #0f6b52;
   --syn-number: #1156a6;
   --syn-function: #6f42c1;
@@ -14,8 +14,10 @@
   --syn-output: var(--muted);
 }
 
+/* dark values twice, like style.css: system preference unless the toggle
+   forced light, and the toggle's explicit dark */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --syn-comment: #8b939b;
     --syn-error: #f47067;
     --syn-keyword: #ff7edb;
@@ -26,6 +28,18 @@
     --syn-attribute: #6cb6ff;
     --syn-variable: #ffab70;
   }
+}
+
+:root[data-theme="dark"] {
+  --syn-comment: #8b939b;
+  --syn-error: #f47067;
+  --syn-keyword: #ff7edb;
+  --syn-string: #4fd1a5;
+  --syn-number: #6cb6ff;
+  --syn-function: #b392f0;
+  --syn-tag: #7ee787;
+  --syn-attribute: #6cb6ff;
+  --syn-variable: #ffab70;
 }
 
 .highlight .c,

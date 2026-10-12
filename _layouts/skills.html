@@ -4,7 +4,7 @@
   <body>
     <div class="wrap">
       {% include header.html %}
-      <main>
+      <main id="main">
         <h1 class="page-title">{{ page.title }}</h1>
         {% comment %} One entry per skill page (skills/<name>/index.html, layout: skill). {% endcomment %}
         {% assign skill_pages = site.pages | where: "layout", "skill" | sort: "title" %}

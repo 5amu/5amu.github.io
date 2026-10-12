@@ -1,5 +1,13 @@
 <script>
   (function () {
+    // the buttons' aria-label hides their "copied" text from screen readers,
+    // so the result is announced through this region instead
+    var live = document.createElement("p");
+    live.className = "visually-hidden";
+    live.setAttribute("role", "status");
+    live.setAttribute("aria-live", "polite");
+    document.body.appendChild(live);
+
     function fallbackCopy(text) {
       var area = document.createElement("textarea");
       area.value = text;
@@ -24,10 +32,22 @@
         ? navigator.clipboard.writeText(text).catch(function () { return fallbackCopy(text); })
         : fallbackCopy(text);
       copy.then(
-        function () { flash(btn, "copied"); },
-        function () { flash(btn, "failed"); }
+        function () {
+          flash(btn, "copied");
+          announce("Install command copied to the clipboard");
+        },
+        function () {
+          flash(btn, "failed");
+          announce("Copy failed: select the command and copy it by hand");
+        }
       );
     });
+
+    function announce(message) {
+      // clear first so the same message is announced again on a second copy
+      live.textContent = "";
+      setTimeout(function () { live.textContent = message; }, 50);
+    }
 
     function flash(btn, label) {
       btn.textContent = label;

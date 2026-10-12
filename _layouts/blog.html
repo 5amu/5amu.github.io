@@ -4,7 +4,7 @@
   <body>
     <div class="wrap">
       {% include header.html %}
-      <main>
+      <main id="main">
         <h1 class="page-title">{{ page.title }}</h1>
         {% assign blog_tags = site.posts | map: "categories" | join: "," | split: "," | uniq | sort %}
         {% include list-filter.html label="Search posts" placeholder="Search by title, tag, or keyword…" tags=blog_tags %}

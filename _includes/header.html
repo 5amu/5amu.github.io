@@ -1,5 +1,6 @@
-{% if page.prompt %}{% assign prompt = page.prompt %}{% elsif page.collection == "posts" %}{% capture prompt %}5amu:~/blog/p/{{ page.slug }}$ cd ../..{% endcapture %}{% elsif page.layout == "skill" %}{% capture prompt %}5amu:~/skills/{{ page.skill }}$ cd ../..{% endcapture %}{% else %}{% assign prompt = site.title %}{% endif %}
+{% if page.prompt %}{% assign prompt = page.prompt %}{% elsif page.collection == "posts" %}{% capture prompt %}5amu:~/blog/{{ page.slug }}$ cd ../..{% endcapture %}{% elsif page.layout == "skill" %}{% capture prompt %}5amu:~/skills/{{ page.skill }}$ cd ../..{% endcapture %}{% else %}{% assign prompt = site.title %}{% endif %}
 {% if page.layout == "home" %}{% assign nav_current = "home" %}{% elsif page.layout == "blog" or page.collection == "posts" %}{% assign nav_current = "blog" %}{% elsif page.layout == "skills" or page.layout == "skill" %}{% assign nav_current = "skills" %}{% else %}{% assign nav_current = "" %}{% endif %}
+<a class="skip-link" href="#main">skip to content</a>
 <header class="site-header">
   <div class="nav-pill">
     <a class="site-title" href="{{site.baseurl}}/">
@@ -17,7 +18,7 @@
       type="button"
       role="switch"
       aria-checked="false"
-      aria-label="Switch to dark mode"
+      aria-label="Dark mode"
     >
       <span class="theme-toggle-track">
         <span class="theme-toggle-thumb">
@@ -114,10 +115,11 @@
     function applyTheme(theme) {
       document.documentElement.setAttribute("data-theme", theme);
       btn.setAttribute("aria-checked", theme === "dark" ? "true" : "false");
-      btn.setAttribute(
-        "aria-label",
-        theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
-      );
+      // the browser chrome follows the toggle too, not just the OS setting
+      var field = theme === "dark" ? "#14161a" : "#e2ded4";
+      document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) {
+        m.setAttribute("content", field);
+      });
     }
 
     applyTheme(currentTheme());

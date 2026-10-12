@@ -4,7 +4,7 @@
   <body>
     <div class="wrap">
       {% include header.html %}
-      <main>
+      <main id="main">
         <article>
           <div class="post-header">
             <div class="post-header-text">
@@ -15,7 +15,7 @@
               {% if page.date %}<time class="post-date" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y-%m-%d" }}</time>{% endif %}
             </div>
             {% if page.image %}
-            <img class="post-header-thumb" src="{{page.image | relative_url}}" alt="" />
+            <img class="post-header-thumb" src="{{page.image | relative_url}}" alt="" width="104" height="104" />
             {% endif %}
           </div>
           <div class="card content">{{content}}</div>

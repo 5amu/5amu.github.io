@@ -5,6 +5,8 @@
   Each <li> needs data-url and data-tags (space-separated); without an index
   it's matched on its data-search attribute, else its visible text. Any
   [data-tag] button on the page toggles that tag. Needs #search-empty.
+  The search and tags live in the URL (?q=...&tag=a&tag=b), so a filtered
+  view can be linked and survives Back; #search-status announces the count.
 {% endcomment %}
     <script>
       (function () {
@@ -12,6 +14,8 @@
         var items = Array.prototype.slice.call(document.querySelectorAll("#{{ include.list }} li"));
         var empty = document.getElementById("search-empty");
         var clearBtn = document.getElementById("tag-filter-clear");
+        var status = document.getElementById("search-status");
+        var statusTimer = null;
         var index = null;
         var selectedTags = [];
 
@@ -28,6 +32,7 @@
                 [post.title, (post.categories || []).join(" "), post.content].join(" ")
               );
             });
+            if (input.value.trim()) applyFilters();
           })
           .catch(function () {
             // search index unavailable, fall back to matching visible text only
@@ -77,7 +82,44 @@
             if (matches) visibleCount++;
           });
 
-          empty.style.display = (terms.length || selectedTags.length) && visibleCount === 0 ? "" : "none";
+          var filtering = terms.length > 0 || selectedTags.length > 0;
+          empty.style.display = filtering && visibleCount === 0 ? "" : "none";
+          syncUrl();
+
+          // announce once typing settles, not on every keystroke
+          clearTimeout(statusTimer);
+          statusTimer = setTimeout(function () {
+            if (!status) return;
+            if (!filtering) status.textContent = "";
+            else if (visibleCount === 0) status.textContent = empty.textContent;
+            else status.textContent = visibleCount + " of " + items.length + " shown";
+          }, 500);
+        }
+
+        function syncUrl() {
+          if (!window.URLSearchParams || !history.replaceState) return;
+          var params = new URLSearchParams();
+          var q = input.value.trim();
+          if (q) params.set("q", q);
+          selectedTags.forEach(function (t) { params.append("tag", t); });
+          var query = params.toString();
+          history.replaceState(history.state, "", location.pathname + (query ? "?" + query : "") + location.hash);
+        }
+
+        function restoreFromUrl() {
+          if (!window.URLSearchParams) return;
+          var params = new URLSearchParams(location.search);
+          var known = Array.prototype.map.call(document.querySelectorAll("[data-tag]"), function (btn) {
+            return btn.getAttribute("data-tag");
+          });
+          input.value = params.get("q") || "";
+          params.getAll("tag").forEach(function (t) {
+            if (known.indexOf(t) !== -1 && !isSelected(t)) selectedTags.push(t);
+          });
+          if (input.value || selectedTags.length) {
+            syncTagButtons();
+            applyFilters();
+          }
         }
 
         input.addEventListener("input", applyFilters);
@@ -94,5 +136,7 @@
             applyFilters();
           });
         }
+
+        restoreFromUrl();
       })();
     </script>

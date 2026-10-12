@@ -7,7 +7,7 @@ image: /assets/img/polyglot_icon.png
 
 Yesterday I saw this video from [LiveOverflow](https://twitter.com/liveoverflow):
 
-{% include video.html id="VVdmmN0su6E" %}
+{% include video.html id="VVdmmN0su6E" title="LiveOverflow video on YouTube" %}
 
 Then, I was interested in seeing if antivirus software could detect an instance of binary polyglots in a Windows system.
 

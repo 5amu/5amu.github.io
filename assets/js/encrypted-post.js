@@ -40,22 +40,25 @@
     const form = document.createElement("form");
     form.className = "decrypt-gate";
 
-    const label = document.createElement("p");
+    const label = document.createElement("label");
+    label.htmlFor = "decrypt-input";
     label.textContent = prompt;
     form.appendChild(label);
 
     if (errorMessage) {
       const error = document.createElement("p");
       error.className = "decrypt-error";
+      error.setAttribute("role", "alert");
       error.textContent = errorMessage;
       form.appendChild(error);
     }
 
     const input = document.createElement("input");
     input.type = "password";
+    input.id = "decrypt-input";
     input.name = "flag";
     input.autocomplete = "off";
-    input.placeholder = "flag";
+    input.placeholder = "flag\u2026";
     input.required = true;
     form.appendChild(input);
 
@@ -66,7 +69,8 @@
 
     form.addEventListener("submit", onSubmit);
     container.appendChild(form);
-    input.focus();
+    // skip on touch screens, where focusing pops the keyboard over the post
+    if (window.matchMedia("(pointer: fine)").matches) input.focus();
   }
 
   async function onSubmit(event) {

@@ -1,11 +1,14 @@
 {% assign post = include.post %}
+{% comment %} heading: the title's tag, h2 by default; h3 where the list sits under an h2 (homepage). {% endcomment %}
+{% assign heading = include.heading | default: "h2" %}
+{% if include.featured %}{% assign thumb_size = 84 %}{% else %}{% assign thumb_size = 52 %}{% endif %}
 <li class="post-card{% if include.featured %} featured{% endif %}" data-url="{{ post.url }}" data-tags="{{ post.categories | join: ' ' }}">
   {% if post.image %}
-  <img class="post-card-thumb" src="{{post.image | relative_url}}" alt="" loading="lazy" />
+  <img class="post-card-thumb" src="{{post.image | relative_url}}" alt="" width="{{ thumb_size }}" height="{{ thumb_size }}" loading="lazy" />
   {% endif %}
   <div class="post-card-body">
     <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
-    <p class="post-card-title"><a href="{{site.baseurl}}{{post.url}}">{{post.title}}</a></p>
+    <{{ heading }} class="post-card-title"><a href="{{site.baseurl}}{{post.url}}">{{post.title}}</a></{{ heading }}>
     {% if post.description %}<p class="post-card-desc">{{ post.description | escape }}</p>{% endif %}
     {% if post.categories.size > 0 %}
     <div class="post-card-tags">{% for c in post.categories %}{% if include.filterable %}<button type="button" class="tag" data-tag="{{ c }}" aria-pressed="false">#{{ c }}</button>{% else %}<span class="tag">#{{ c }}</span>{% endif %}{% endfor %}</div>

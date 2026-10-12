@@ -4,14 +4,14 @@
   <body>
     <div class="wrap">
       {% include header.html %}
-      <main class="no-bio">
+      <main id="main" class="no-bio">
         <section class="hero">
           <div class="hero-head">
             <div class="hero-id">
               <h1 class="reveal" style="--i: 0">{{site.data.author.name}}</h1>
               <p class="hero-role reveal" style="--i: 1">{{site.data.author.description | strip_html}}</p>
             </div>
-            <img class="hero-portrait reveal" style="--i: 1" src="{{site.data.author.dp}}" alt="{{site.data.author.name}}" width="168" height="168" />
+            <img class="hero-portrait reveal" style="--i: 1" src="{{site.data.author.dp}}" alt="{{site.data.author.name}}" width="168" height="168" fetchpriority="high" />
           </div>
           <div class="card hero-card reveal" style="--i: 2">
             <p class="hero-cmd"><span class="hero-cmd-prompt">{{ site.title }}</span> cat whoami.txt</p>
@@ -57,7 +57,7 @@
               {% assign job = jobs[job_index] %}
               <li class="timeline-item{% unless job.end %} is-current{% endunless %}">
                 <div class="timeline-card">
-                  {% if job.logo %}<img class="timeline-logo" src="{{ job.logo | relative_url }}" alt="" width="48" height="48" />{% endif %}
+                  {% if job.logo %}<img class="timeline-logo" src="{{ job.logo | relative_url }}" alt="" width="48" height="48" loading="lazy" />{% endif %}
                   <div class="timeline-body">
                   <p class="timeline-period">{% if job.start %}<time datetime="{{ job.start }}">{{ job.start | append: "-01" | date: "%b %Y" }}</time> - {% endif %}{% if job.end %}<time datetime="{{ job.end }}">{{ job.end | append: "-01" | date: "%b %Y" }}</time>{% else %}present{% endif %}</p>
                   <h3 class="timeline-role">{{ job.role }}</h3>
@@ -97,7 +97,7 @@
           <h2 class="section-title">Latest writing</h2>
           <ul class="post-grid">
             {% for post in site.posts limit: 3 %}
-            {% include post-card.html post=post featured=forloop.first %}
+            {% include post-card.html post=post featured=forloop.first heading="h3" %}
             {% endfor %}
           </ul>
           <p class="section-more"><a href="{{site.baseurl}}/blog/">read the blog <span aria-hidden="true">&rarr;</span></a></p>

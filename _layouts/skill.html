@@ -13,7 +13,7 @@
       {% assign first_line = skill_body | newline_to_br | split: "<br />" | first | strip %}
       {% assign first_two = first_line | slice: 0, 2 %}
       {% if first_two == "# " %}{% assign skill_body = skill_body | remove_first: first_line %}{% endif %}
-      <main>
+      <main id="main">
         <p class="back-nav"><a class="button" href="{{ '/skills/' | relative_url }}">{% include icon.html name="arrow-left" %} back to skills</a></p>
         <article>
           <div class="post-header">

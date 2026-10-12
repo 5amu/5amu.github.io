@@ -61,7 +61,7 @@
                   <div class="timeline-body">
                   <p class="timeline-period">{% if job.start %}<time datetime="{{ job.start }}">{{ job.start | append: "-01" | date: "%b %Y" }}</time> - {% endif %}{% if job.end %}<time datetime="{{ job.end }}">{{ job.end | append: "-01" | date: "%b %Y" }}</time>{% else %}present{% endif %}</p>
                   <h3 class="timeline-role">{{ job.role }}</h3>
-                  <p class="timeline-company">{% if job.url %}<a href="{{ job.url }}" target="_blank" rel="noopener">{{ job.company }}</a>{% else %}{{ job.company }}{% endif %}</p>
+                  <p class="timeline-company">{{ job.company }}</p>
                   </div>
                 </div>
               </li>

@@ -6,7 +6,7 @@
       <img class="nav-avatar" src="{{site.data.author.dp}}" alt="" width="30" height="30" />
       <span class="site-prompt">{{ prompt }}</span>
     </a>
-    <nav>
+    <nav id="site-nav">
       <a href="{{site.baseurl}}/"{% if nav_current == "home" %} aria-current="page"{% endif %}>home</a>
       <a href="{{site.baseurl}}/blog/"{% if nav_current == "blog" %} aria-current="page"{% endif %}>blog</a>
       <a href="{{site.baseurl}}/skills/"{% if nav_current == "skills" %} aria-current="page"{% endif %}>skills</a>
@@ -42,10 +42,59 @@
         </span>
       </span>
     </button>
+    <button
+      id="nav-menu-btn"
+      class="nav-menu-btn"
+      type="button"
+      aria-controls="site-nav"
+      aria-expanded="false"
+      aria-label="Open menu"
+    >
+      <span class="nav-menu-open">{% include icon.html name="list" %}</span>
+      <span class="nav-menu-close">{% include icon.html name="x" %}</span>
+    </button>
   </div>
 </header>
 {% unless page.layout == "home" %}{% include bio.html %}{% endunless %}
 <script>
+  // small screens: the nav links collapse into a dropdown behind the menu
+  // button. The CSS only collapses them once .has-menu is set here, so
+  // without JS the links stay inline in the pill.
+  (function () {
+    var pill = document.querySelector(".nav-pill");
+    var btn = document.getElementById("nav-menu-btn");
+    if (!pill || !btn) return;
+    pill.classList.add("has-menu");
+
+    function isOpen() {
+      return pill.classList.contains("is-open");
+    }
+    function setOpen(open) {
+      pill.classList.toggle("is-open", open);
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+      btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    }
+
+    btn.addEventListener("click", function () {
+      setOpen(!isOpen());
+    });
+    document.addEventListener("click", function (e) {
+      if (isOpen() && !pill.contains(e.target)) setOpen(false);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && isOpen()) {
+        setOpen(false);
+        btn.focus();
+      }
+    });
+    var wide = window.matchMedia("(min-width: 641px)");
+    var onWide = function (e) {
+      if (e.matches) setOpen(false);
+    };
+    if (wide.addEventListener) wide.addEventListener("change", onWide);
+    else if (wide.addListener) wide.addListener(onWide);
+  })();
+
   (function () {
     var btn = document.getElementById("theme-toggle");
     if (!btn) return;

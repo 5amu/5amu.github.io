@@ -260,6 +260,42 @@ a:hover {
   border-color: var(--line);
 }
 
+/* menu button: only shown on small screens, and only once the header
+   script has added .has-menu (see the @media block at the end) */
+.nav-menu-btn {
+  display: none;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  color: var(--ink);
+  background: var(--paper-2);
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-menu-btn .icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+.nav-menu-close {
+  display: none;
+}
+.nav-pill.is-open .nav-menu-btn {
+  color: var(--on-cta);
+  background: var(--cta);
+}
+.nav-pill.is-open .nav-menu-open {
+  display: none;
+}
+.nav-pill.is-open .nav-menu-close {
+  display: block;
+}
+
 /* theme toggle */
 .theme-toggle {
   flex-shrink: 0;
@@ -1362,6 +1398,32 @@ ul.skill-list {
 }
 
 @media (max-width: 640px) {
+  /* nav links collapse into a dropdown card under the pill */
+  .nav-pill.has-menu {
+    position: relative;
+  }
+  .nav-pill.has-menu .nav-menu-btn {
+    display: inline-flex;
+  }
+  .nav-pill.has-menu nav {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 190px;
+    padding: 8px;
+    background: var(--paper);
+    border: var(--bw) solid var(--line);
+    box-shadow: var(--sh) var(--sh) 0 0 var(--drop);
+  }
+  .nav-pill.has-menu:not(.is-open) nav {
+    display: none;
+  }
+  .nav-pill.has-menu nav a {
+    padding: 8px 12px;
+    font-size: 0.85em;
+  }
   ul.post-grid {
     grid-template-columns: minmax(0, 1fr);
   }

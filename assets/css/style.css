@@ -51,15 +51,18 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* Palette: the site's original colors (off-white / warm grey, near-black
-   text, emerald accent) in a neo-brutalist structure: a warm-grey "field"
-   behind everything, lighter "paper" cards with ink borders and hard offset
-   shadows, emerald CTAs. In dark mode the roles stay the same (paper is the
-   lighter, raised surface) and the hard shadows switch to the accent. */
+/* Palette: the site's original colors (warm greys, near-black text,
+   emerald accent) in a neo-brutalist structure: a warm-grey "field" behind
+   everything, lighter "paper" cards with ink borders and hard offset
+   shadows, emerald CTAs. Light-mode surfaces are deliberately a muted,
+   darker off-white rather than near-white; --muted text on --paper is
+   ~4.5:1, so don't darken --paper further without darkening --muted. In
+   dark mode the roles stay the same (paper is the lighter, raised surface)
+   and the hard shadows switch to the accent. */
 :root {
-  --field: #f1efe9;
-  --paper: #fbfaf7;
-  --paper-2: #f1efe9;
+  --field: #e2ded4;
+  --paper: #efece5;
+  --paper-2: #e2ded4;
   --ink: #1c1c1c;
   --muted: #6b6b6b;
   --line: #1c1c1c;
@@ -68,7 +71,11 @@
   --cta: #0f6b52;
   --on-cta: #fbfaf7;
   --title-shadow: #0f6b52;
-  --code-bg: #f1efe9;
+  --code-bg: #e2ded4;
+  /* company logos: blended into the card in light mode (absorbs the opaque
+     white backgrounds some ship with); a white plate in dark mode */
+  --logo-plate: transparent;
+  --logo-blend: multiply;
   --footer-bg: #1c1c1c;
   --footer-fg: #e7e6e2;
   --footer-mark: #4fd1a5;
@@ -100,6 +107,8 @@
     --on-cta: #14161a;
     --title-shadow: #0f6b52;
     --code-bg: #14161a;
+    --logo-plate: #fff;
+    --logo-blend: normal;
     --footer-bg: #1c1f24;
     color-scheme: dark;
   }
@@ -118,6 +127,8 @@
   --on-cta: #14161a;
   --title-shadow: #0f6b52;
   --code-bg: #14161a;
+  --logo-plate: #fff;
+  --logo-blend: normal;
   --footer-bg: #1c1f24;
   color-scheme: dark;
 }
@@ -695,15 +706,15 @@ main.no-bio {
   box-shadow: var(--sh) var(--sh) 0 0 var(--drop);
   transition: filter 0.35s ease, opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
-/* logos sit on a fixed white plate in both themes: several ship with an
-   opaque white background, and dark-on-transparent marks need it too */
+/* logos: see --logo-plate / --logo-blend */
 .timeline-logo {
   flex: 0 0 auto;
   width: 48px;
   height: 48px;
   padding: 5px;
   object-fit: contain;
-  background: #fff;
+  background: var(--logo-plate);
+  mix-blend-mode: var(--logo-blend);
   border: 2px solid var(--line);
 }
 .timeline-body {

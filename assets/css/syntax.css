@@ -1,8 +1,9 @@
-/* Rouge syntax highlighting, tuned for style.css's light/dark palette */
+/* Rouge syntax highlighting, tuned for style.css's light/dark palette.
+   Light values are checked for >= 4.5:1 against --code-bg (#e2ded4). */
 
 :root {
-  --syn-comment: #6b7280;
-  --syn-error: #c0362c;
+  --syn-comment: #5a606c;
+  --syn-error: #b23228;
   --syn-keyword: #9c1c4b;
   --syn-name: var(--ink);
   --syn-string: #0f6b52;
@@ -10,8 +11,8 @@
   --syn-function: #6f42c1;
   --syn-tag: #116329;
   --syn-attribute: #1156a6;
-  --syn-variable: #a35a00;
-  --syn-output: var(--muted);
+  --syn-variable: #925000;
+  --syn-output: #616161;
 }
 
 /* dark values twice, like style.css: system preference unless the toggle
@@ -27,6 +28,7 @@
     --syn-tag: #7ee787;
     --syn-attribute: #6cb6ff;
     --syn-variable: #ffab70;
+    --syn-output: var(--muted);
   }
 }
 
@@ -40,6 +42,7 @@
   --syn-tag: #7ee787;
   --syn-attribute: #6cb6ff;
   --syn-variable: #ffab70;
+  --syn-output: var(--muted);
 }
 
 .highlight .c,

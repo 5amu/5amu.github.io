@@ -1,0 +1,135 @@
+# The unslop agent skill: the SKILL.md served to `npx skills add`
+# (see skills/unslop/). The page there carries the human-facing title and
+# summary; this file holds only what goes into SKILL.md.
+# description: the trigger text agents read to decide when to use the skill.
+# body: the Markdown instructions, served verbatim (data files get no Liquid
+#   and no Markdown conversion). Keep the two-space indent on every line.
+# disable-model-invocation: true makes it manual-only (/unslop), so agents
+#   never load it on their own.
+disable-model-invocation: true
+description: "Remove AI-writing tells and put a human voice back. Use whenever writing or editing prose a person will read: docs, READMEs, blog posts, emails, chat messages, PR and commit descriptions, release notes, UI copy, or any text the user asks to unslop, humanize, de-AI or tighten. Works through 39 numbered patterns, then a mechanical scan before returning."
+body: |
+  # Unslop
+
+  Edit text so it reads like a careful person wrote it. There are two ways to fail: AI tells (the patterns below) and sterile prose with no voice. Fix both.
+
+  ## Ground rules
+
+  - **Keep every fact, add none.** Never invent numbers, sources, quotes, anecdotes or opinions to make text sound human. When a sentence needs a specific you don't have, cut the sentence, or keep it and mark the gap with `[?]` if the user is drafting.
+  - **Leave literal content alone.** Code, commands, identifiers, URLs, quotations and product names stay as they are. A listed word used literally is fine: "vector" in a math post, the "surface" of a table.
+  - **Editing someone else's text: smallest diff.** Keep their voice, opinions and structure. Change only what a pattern flags. Writing your own text: apply everything, voice included.
+  - **Match the register.** A commit message, a README and a blog post want different things. Don't add jokes, slang, typos or fake casualness to seem human. That is its own tell.
+  - **Output.** Return the rewritten text and nothing else, unless the user asked for notes. When asked to review instead of rewrite, list each tell with its rule number, the quoted text and the fix.
+
+  ## Process
+
+  1. Read the whole text. Find the point of each paragraph. Cut any paragraph that has none.
+  2. Cut what carries no content: openers, recaps, signposts, filler sentences.
+  3. Rewrite against the patterns below.
+  4. Add soul (next section), within the ground rules.
+  5. Run the final check at the end of this file. Then ask "What makes this obviously AI generated?" and fix what's left.
+
+  ## Adding soul
+
+  Removing patterns is half the job. Sterile, voiceless writing is just as obvious.
+
+  - **Have opinions.** React to facts instead of neutrally listing pros and cons. When editing, keep the author's opinions and don't supply new ones.
+  - **Vary rhythm.** Short sentences. Then longer ones that take their time. Paragraphs of different lengths. Mix it up.
+  - **Acknowledge complexity.** "Impressive but also kind of unsettling" beats "impressive."
+  - **Use "I" when it fits.** First person isn't unprofessional.
+  - **Let some mess in.** Perfect structure looks machine-made. Not every paragraph needs a topic sentence and a closing line.
+  - **Be specific with what you know.** Not "this is concerning" but the concern itself: "the agent ran unattended at 3am and nobody read its output."
+
+  ## Patterns to detect and fix
+
+  Rule numbers are stable ids that other skills cite. Never renumber; add new rules at the end. A removed rule leaves a gap.
+
+  ### Content
+
+  1. **Puffery.** "pivotal moment", "testament to", "evolving landscape", "setting the stage for", "indelible mark", "deeply rooted". Cut puffery, state what happened.
+  2. **Name-dropping.** Listing media outlets without context. Pick one, say what was said.
+  3. **Superficial -ing phrases.** A trailing participle that comments on its own sentence: "..., highlighting...", "ensuring...", "reflecting...", "showcasing...", "fostering...". Delete it, or make it a real claim with a source.
+  4. **Promotional language.** "nestled", "vibrant", "breathtaking", "groundbreaking", "renowned", "stunning", "must-visit", "seamless", "robust", "powerful", "cutting-edge", "game-changer", "best-in-class". Use neutral descriptions.
+  5. **Vague attributions.** "Experts believe", "Industry reports suggest", "Some critics argue". Name the source or delete.
+  6. **Formulaic challenges.** "Despite challenges... continues to thrive." Replace with specific facts.
+
+  ### Language
+
+  7. **AI vocabulary.** Additionally, align with, crucial, delve, elevate, embark, empower, enduring, enhance, ever-evolving, foster, garner, holistic, interplay, intricate, journey (abstract), landscape (abstract), meticulous, multifaceted, navigate (abstract), nuanced, paramount, pivotal, realm, resonate, showcase, streamline, tapestry (abstract), testament, transformative, underscore, unlock, unleash, vibrant. Also sentence openers like Moreover, Furthermore, Notably, Importantly, Ultimately. Replace with plain words or delete.
+  8. **Fancy ways to say "is".** "serves as", "stands as", "boasts", "features". Just say "is" or "has".
+  9. **Negative parallelism.** "Not just X, but Y", "It's not X, it's Y", "X isn't about Y. It's about Z.", "No X. No Y. Just Z." State the point directly instead.
+  10. **Rule of three.** Forcing ideas into groups of three. Use the natural number.
+  11. **Synonym cycling.** Protagonist, main character, central figure, hero all in one paragraph. Pick one, repeat it.
+  12. **False ranges.** "from X to Y" where X and Y aren't on a meaningful scale. List topics directly.
+
+  ### Style
+
+  13. **Em dash overuse.** Avoid em dashes entirely. Use periods or commas only (no parentheses, no en dashes, no hyphen-as-dash substitutes). Em dashes are an AI tell, and reaching for parentheses instead just trades one tell for another. If a thought needs separation, end the sentence or use a comma.
+  14. **Colon overuse.** Colons are fine before a list or example. Not as mid-sentence connectors. "If you're coming from traditional automation: instead of registering event handlers, you describe conditions" adds nothing with the colon. Rewrite to let the point stand on its own without comparison framing. "Describing when the scheduler should fire works best as plain English." Same meaning, no crutch punctuation.
+  15. **Boldface overuse.** Don't bold every proper noun or acronym.
+  16. **Inline-header lists.** The tell is a bold label and colon that restates the line: "**Performance:** Performance improved...". Convert those to prose. A bold lead-in that ends in a period, names the item, and is followed by genuinely new detail ("**Schema in TypeScript.** Tables live in one file.") is fine, not a tell.
+  17. **Title case headings.** Use sentence case.
+  18. **Decorative emojis.** Remove from headings and bullets, including checkmarks, rockets, sparkles and light bulbs.
+  19. **Curly quotes.** Replace curly quotes and apostrophes with straight ones.
+
+  ### Communication artifacts
+
+  20. **Chatbot phrases.** "I hope this helps!", "Let me know if...", "Feel free to...", "Happy to help!", "Of course!", "Certainly!", "Found the smoking gun!" Remove.
+  21. **Cutoff disclaimers.** "While specific details are limited..." Find sources or remove.
+  22. **Sycophantic tone.** "Great question! You're absolutely right!" Respond directly.
+
+  ### Filler
+
+  23. **Filler phrases.** "In order to" becomes "To". "Due to the fact that" becomes "Because". "It is important to note that" gets deleted.
+  24. **Excessive hedging.** "could potentially possibly be argued that it might" becomes "may".
+  25. **Generic conclusions.** "The future looks bright." "In summary", "Overall", "Key takeaways", and closing paragraphs that repeat what was already said. State specific plans or facts, or stop when the content stops.
+
+  ### Jargon
+
+  26. **Abstract metaphor nouns.** Substrate, wedge, vector, locus, vantage, nexus, primitive (as noun), harness (as metaphor), surface (as in "API surface"), bedrock, scaffolding (as metaphor), modality, paradigm, gold-plating, ratchet (as metaphor), evacuate (for moving code), endgame, north star, flywheel. These read as technical but usually have a plainer concrete word. "Substrate" becomes "base". "Wedge in" becomes "add". "Vector" becomes "way" or "method". "Gold-plating" becomes "more than the job needs". "Ratchet" becomes the mechanism's real name or "a limit that only tightens". "Evacuate" becomes "move out". "Endgame" becomes "the last phase". Pick the concrete word.
+
+  ### Plain speech
+
+  27. **Say what it does, not how it feels.** "the database stays close at hand", "SQL you can read", "types that follow your schema" name a feeling. The fix names the mechanism or a number: "`.toSQL()` returns the exact string sent to the database", "a column rename fails the build". Ask what the sentence tells the reader to do or know, then write that. If you can't restate it as a concrete instruction, fact, or number, cut it. One more check: if the sentence could appear unchanged in another project's docs, it says nothing about this one. Cut it.
+  28. **Shorten or split dense sentences.** If the reader has to backtrack to parse a sentence, break it in two or drop clauses. One idea per sentence.
+  29. **Active voice.** Prefer it. Catch "is/are/was/were + past participle" and name the actor: "queries are validated" becomes "the compiler validates queries", "the file is parsed by the loader" becomes "the loader parses the file". Passive is fine only when the actor is unknown or genuinely doesn't matter.
+  30. **Cut adverbs, or use a stronger verb.** "runs quickly" becomes "is fast" or the number. "significantly improves" becomes the measured delta. An adverb propping up a weak verb means the verb is wrong.
+  31. **Prefer the plain word.** "utilize" becomes "use", "leverage" becomes "use", "facilitate" becomes "help", "numerous" becomes "many", "in the event that" becomes "if". The fancier synonym is rarely clearer.
+  32. **Mannered prose.** Metaphor or flourish where a literal phrase exists: aphorisms ("wire it or delete it"), rhetorical fragments for effect, personified code ("the plan holds it"), figurative verbs ("rides along", "stands on"), stock framing phrases. "A dial worth turning" becomes "a parameter worth varying". Say what you mean. Rule 26 covers the metaphor nouns.
+  33. **Over-compression.** Dropped articles, verbless fragments, symbol-speak, and abbreviations that make the reader decode instead of read. "Parser rejects bad date → exit 2, no write" becomes "The parser rejects a bad date, exits with code 2, and writes nothing." Write whole sentences with their articles and verbs, and spell out arrows and abbreviations.
+
+  ### Structure
+
+  34. **Throat-clearing openers.** "Let's dive in", "Let's break it down", "Here's the thing", "Here's why this matters", "In this post, we'll explore", "When it comes to X", "In today's fast-paced world", "Imagine a world where", "Picture this". Start with the first real sentence.
+  35. **Question-then-answer reveals.** "The result? A 40% drop." "So what changed? Everything." "Why does this matter? Because..." Make the statement.
+  36. **Tidy paragraph endings.** A last line that restates the paragraph as a moral or punchline: "And that changes everything." "That's the real lesson." Most paragraphs can end on their last fact. Cut the line.
+  37. **Sincerity and intensity markers.** honestly, genuinely, truly, really, incredibly, absolutely, literally, "to be honest", "make no mistake". Delete them. If the claim needs force, give evidence.
+  38. **Formatting out of proportion.** Headings, bullet lists, tables or bold on a short reply or a few paragraphs of reasoning. Use prose unless the items are truly parallel: steps, options, specs. A three-paragraph answer needs no headings. A bullet that holds a whole argument should be a paragraph.
+  39. **Restating before answering.** Repeating the question, announcing what you're about to say, or defining terms the reader already knows. Answer first, then add what the reader doesn't have yet.
+
+  ## Example
+
+  Before:
+
+  > In today's fast-paced development landscape, robust error handling isn't just a nice-to-have — it's crucial. Our new retry module serves as a powerful tool, seamlessly handling transient failures, network timeouts, and rate limits. The result? Fewer pages at 3am. Overall, it's a game-changer for reliability.
+
+  After:
+
+  > The retry module retries a failed request with exponential backoff. It handles timeouts, rate limits and other transient failures.
+
+  The source had no numbers, so "fewer pages at 3am" and "game-changer" go instead of being replaced with invented ones. If the author has the real alert counts, they belong in a third sentence.
+
+  ## Final check
+
+  Before returning, scan the output. Each hit needs a fix unless it sits in code or a quotation.
+
+  - Characters: em dash (—), en dash (–), curly quotes (“ ” ‘ ’), arrows (→) in prose, decorative emoji.
+  - Words from rules 4, 7, 26, 31 and 37.
+  - Phrases: "not just", "it's not", "isn't about", "serves as", "stands as", "Let's", "Here's", "In summary", "Overall,", "Key takeaways".
+  - Sentences that open with Additionally, Moreover, Furthermore, Notably or Ultimately.
+  - Sentences that end in a comma plus an -ing clause (rule 3).
+  - A question answered in the next sentence (rule 35).
+  - Headings in title case, bold scattered through body text, bullets that should be prose.
+  - A closing paragraph that summarizes.
+
+  Then reread it once as the intended reader. If any sentence makes you suspect a machine wrote it, rewrite that sentence.

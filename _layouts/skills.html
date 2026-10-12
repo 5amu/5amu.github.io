@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include head.html %}
+  <body>
+    <div class="wrap">
+      {% include header.html %}
+      <main>
+        <h1 class="page-title">{{ page.title }}</h1>
+        <div class="skills-intro">{{ content }}</div>
+        {% comment %} One entry per skill page (skills/<name>/index.html, layout: skill). {% endcomment %}
+        {% assign skill_pages = site.pages | where: "layout", "skill" | sort: "title" %}
+        <ul class="skill-list">
+          {% for skill_page in skill_pages %}
+          <li class="card skill-card">
+            <h2 class="skill-card-name"><a href="{{ skill_page.url | relative_url }}">{{ skill_page.title }}</a></h2>
+            <p class="skill-card-desc">{{ skill_page.description | escape }}</p>
+            {% include skill-install.html name=skill_page.skill %}
+            <p class="skill-links">
+              <a href="{{ skill_page.url | relative_url }}">read the skill <span aria-hidden="true">&rarr;</span></a>
+              <a href="{{ skill_page.url | relative_url }}.well-known/agent-skills/{{ skill_page.skill }}/SKILL.md">raw SKILL.md</a>
+            </p>
+          </li>
+          {% endfor %}
+        </ul>
+      </main>
+    </div>
+    {% include footer.html %}
+    {% include skill-copy-script.html %}
+  </body>
+</html>

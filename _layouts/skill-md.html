@@ -1,0 +1,15 @@
+{%- comment -%}
+  The raw SKILL.md that `npx skills add` downloads: front matter rebuilt from
+  _data/skills/<name>.yml (jsonify output is valid YAML), then the body as-is.
+  Must start with "---", so nothing may be output above it.
+{%- endcomment -%}
+{%- assign skill = site.data.skills[page.skill] -%}
+---
+name: {{ page.skill }}
+description: {{ skill.description | jsonify }}
+{%- if skill["disable-model-invocation"] %}
+disable-model-invocation: true
+{%- endif %}
+---
+
+{{ skill.body | strip }}

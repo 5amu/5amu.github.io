@@ -9,11 +9,18 @@ Site of {{ site.data.author.name }}, {{ site.data.author.description | strip_htm
 ## Pages
 
 - [Blog]({{ site.url }}{{ site.baseurl }}/blog/): Searchable list of all posts.
+- [Skills]({{ site.url }}{{ site.baseurl }}/skills/): Agent skills, installable with `npx skills add`.
 
 ## Posts
 {% for post in site.posts %}
 {%- if post.description %}{% assign summary = post.description %}{% else %}{% assign summary = post.excerpt | strip_html | normalize_whitespace | truncate: 200 %}{% endif %}
 - [{{ post.title }}]({{ post.url | absolute_url }}){% if post.categories %} ({{ post.categories | join: ", " }}){% endif %}: {{ summary | strip_html | normalize_whitespace }}
+{%- endfor %}
+
+## Skills
+{% assign skill_pages = site.pages | where: "layout", "skill" | sort: "title" %}
+{%- for skill_page in skill_pages %}
+- [{{ skill_page.title }}]({{ skill_page.url | absolute_url }}): {{ skill_page.description | normalize_whitespace }} Install: `npx skills add {{ site.url }}{{ site.baseurl }}/skills/{{ skill_page.skill }}`
 {%- endfor %}
 
 ## Feeds

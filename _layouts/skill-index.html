@@ -1,0 +1,16 @@
+{%- comment -%}
+  Well-known discovery index (v1: name, description, files) scoped to one
+  skill. For https://host/skills/<name> the skills CLI fetches
+  /skills/<name>/.well-known/agent-skills/index.json, then <name>/SKILL.md
+  next to it. Paths are relative to the index, so no hostname is baked in.
+{%- endcomment -%}
+{%- assign skill = site.data.skills[page.skill] -%}
+{
+  "skills": [
+    {
+      "name": {{ page.skill | jsonify }},
+      "description": {{ skill.description | jsonify }},
+      "files": ["SKILL.md"]
+    }
+  ]
+}

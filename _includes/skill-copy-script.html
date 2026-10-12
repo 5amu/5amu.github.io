@@ -1,0 +1,42 @@
+<script>
+  (function () {
+    function fallbackCopy(text) {
+      var area = document.createElement("textarea");
+      area.value = text;
+      area.setAttribute("readonly", "");
+      area.style.position = "absolute";
+      area.style.left = "-9999px";
+      document.body.appendChild(area);
+      area.select();
+      var ok = false;
+      try {
+        ok = document.execCommand("copy");
+      } catch (e) {}
+      document.body.removeChild(area);
+      return ok ? Promise.resolve() : Promise.reject();
+    }
+
+    document.addEventListener("click", function (e) {
+      var btn = e.target.closest("[data-copy]");
+      if (!btn) return;
+      var text = btn.getAttribute("data-copy");
+      var copy = navigator.clipboard && window.isSecureContext
+        ? navigator.clipboard.writeText(text).catch(function () { return fallbackCopy(text); })
+        : fallbackCopy(text);
+      copy.then(
+        function () { flash(btn, "copied"); },
+        function () { flash(btn, "failed"); }
+      );
+    });
+
+    function flash(btn, label) {
+      btn.textContent = label;
+      btn.classList.toggle("is-done", label === "copied");
+      clearTimeout(btn._reset);
+      btn._reset = setTimeout(function () {
+        btn.textContent = "copy";
+        btn.classList.remove("is-done");
+      }, 1600);
+    }
+  })();
+</script>

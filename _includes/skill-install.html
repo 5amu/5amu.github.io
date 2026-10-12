@@ -1,0 +1,6 @@
+{%- comment -%} The install command for skill `include.name`; the host comes from _config.yml's url. {%- endcomment -%}
+{%- capture skill_cmd %}npx skills add {{ site.url }}{{ site.baseurl }}/skills/{{ include.name }}{% endcapture -%}
+<div class="skill-install">
+  <code class="skill-cmd"><span class="skill-cmd-prompt" aria-hidden="true">$</span> <span class="skill-cmd-text">{{ skill_cmd }}</span></code>
+  <button type="button" class="skill-copy" data-copy="{{ skill_cmd | escape }}" aria-label="Copy install command for {{ include.name }}">copy</button>
+</div>

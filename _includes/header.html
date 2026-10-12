@@ -1,5 +1,5 @@
-{% if page.prompt %}{% assign prompt = page.prompt %}{% elsif page.collection == "posts" %}{% capture prompt %}5amu:~/blog/p/{{ page.slug }}$ cd ../..{% endcapture %}{% else %}{% assign prompt = site.title %}{% endif %}
-{% if page.layout == "home" %}{% assign nav_current = "home" %}{% elsif page.layout == "blog" or page.collection == "posts" %}{% assign nav_current = "blog" %}{% else %}{% assign nav_current = "" %}{% endif %}
+{% if page.prompt %}{% assign prompt = page.prompt %}{% elsif page.collection == "posts" %}{% capture prompt %}5amu:~/blog/p/{{ page.slug }}$ cd ../..{% endcapture %}{% elsif page.layout == "skill" %}{% capture prompt %}5amu:~/skills/{{ page.skill }}$ cd ../..{% endcapture %}{% else %}{% assign prompt = site.title %}{% endif %}
+{% if page.layout == "home" %}{% assign nav_current = "home" %}{% elsif page.layout == "blog" or page.collection == "posts" %}{% assign nav_current = "blog" %}{% elsif page.layout == "skills" or page.layout == "skill" %}{% assign nav_current = "skills" %}{% else %}{% assign nav_current = "" %}{% endif %}
 <header class="site-header">
   <div class="nav-pill">
     <a class="site-title" href="{{site.baseurl}}/">
@@ -9,6 +9,7 @@
     <nav>
       <a href="{{site.baseurl}}/"{% if nav_current == "home" %} aria-current="page"{% endif %}>home</a>
       <a href="{{site.baseurl}}/blog/"{% if nav_current == "blog" %} aria-current="page"{% endif %}>blog</a>
+      <a href="{{site.baseurl}}/skills/"{% if nav_current == "skills" %} aria-current="page"{% endif %}>skills</a>
     </nav>
     <button
       id="theme-toggle"

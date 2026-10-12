@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include head.html %}
+  <body>
+    <div class="wrap">
+      {% include header.html %}
+      {% assign skill = site.data.skills[page.skill] %}
+      {% comment %}
+        The SKILL.md body usually opens with its own "# Title"; the page h1
+        already names the skill, so drop that first line from the card.
+      {% endcomment %}
+      {% assign skill_body = skill.body | strip %}
+      {% assign first_line = skill_body | newline_to_br | split: "<br />" | first | strip %}
+      {% assign first_two = first_line | slice: 0, 2 %}
+      {% if first_two == "# " %}{% assign skill_body = skill_body | remove_first: first_line %}{% endif %}
+      <main>
+        <article>
+          <div class="post-header">
+            <div class="post-header-text">
+              <div class="post-tags"><span class="tag">#skill</span></div>
+              <h1>{{ page.title }}</h1>
+            </div>
+          </div>
+          <div class="card skill-hero">
+            <p class="skill-card-desc">{{ page.description | escape }}</p>
+            {% include skill-install.html name=page.skill %}
+            <p class="skill-links">
+              <a href="{{ page.url | relative_url }}.well-known/agent-skills/{{ page.skill }}/SKILL.md">raw SKILL.md</a>
+              <a href="{{ '/skills/' | relative_url }}">all skills</a>
+            </p>
+          </div>
+          {% comment %}
+            Kramdown's typographic conversion would show the skill with curly
+            quotes, ellipses and dashes it doesn't contain (and that unslop
+            itself tells you to remove). Undo it for this block only: shield
+            the literal characters the source does contain, convert, map
+            kramdown's output back to ASCII, then restore the shielded ones.
+          {% endcomment %}
+          {% assign skill_html = skill_body | replace: "‘", "zqlsquoq" | replace: "’", "zqrsquoq" | replace: "“", "zqldquoq" | replace: "”", "zqrdquoq" | replace: "…", "zqhellipq" | replace: "–", "zqndashq" | replace: "—", "zqmdashq" | markdownify %}
+          {% assign skill_html = skill_html | replace: "‘", "'" | replace: "’", "'" | replace: "“", '"' | replace: "”", '"' | replace: "…", "..." | replace: "–", "--" | replace: "—", "---" %}
+          {% assign skill_html = skill_html | replace: "zqlsquoq", "‘" | replace: "zqrsquoq", "’" | replace: "zqldquoq", "“" | replace: "zqrdquoq", "”" | replace: "zqhellipq", "…" | replace: "zqndashq", "–" | replace: "zqmdashq", "—" %}
+          <div class="card content skill-body">{{ skill_html }}</div>
+        </article>
+      </main>
+    </div>
+    {% include footer.html %}
+    {% include skill-copy-script.html %}
+  </body>
+</html>

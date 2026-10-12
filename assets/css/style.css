@@ -794,7 +794,8 @@ main.no-bio {
   background: var(--cta);
 }
 
-/* skills callout (home): pitch + button beside an `ls skills/` listing */
+/* skills callout (home): pitch + button beside an `ls skills/` listing,
+   two columns of names */
 .skills-callout {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -826,38 +827,20 @@ main.no-bio {
   border: var(--bw) solid var(--line);
 }
 .skills-callout-ls ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 20px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.skills-callout-ls li + li {
-  margin-top: 14px;
-}
 .skills-callout-name {
   font-weight: 700;
 }
-.skills-callout-desc {
-  display: -webkit-box;
-  margin: 4px 0 0;
-  overflow: hidden;
-  font-size: 0.82em;
-  line-height: 1.6;
-  color: var(--muted);
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-}
-/* stacked, it would run well past the experience section's height: list
-   just the names */
 @media (max-width: 720px) {
   .skills-callout {
     grid-template-columns: minmax(0, 1fr);
     gap: 18px;
-  }
-  .skills-callout-desc {
-    display: none;
-  }
-  .skills-callout-ls li + li {
-    margin-top: 6px;
   }
 }
 

@@ -71,6 +71,31 @@
         </section>
         {% endif %}
 
+        {% assign skill_pages = site.pages | where: "layout", "skill" | sort: "title" %}
+        {% if skill_pages.size > 0 %}
+        <section class="home-section" aria-labelledby="skills-title">
+          <h2 class="section-title" id="skills-title">Skills</h2>
+          <div class="card skills-callout">
+            <div class="skills-callout-text">
+              <p class="skills-callout-lead">Skills I use with coding agents.</p>
+              <p>One <code>SKILL.md</code> each, installable into Claude Code, Codex, Cursor and more with one command.</p>
+              <a class="button" href="{{ '/skills/' | relative_url }}">browse the skills <span aria-hidden="true">&rarr;</span></a>
+            </div>
+            <div class="skills-callout-ls">
+              <p class="hero-cmd"><span class="hero-cmd-prompt">{{ site.title }}</span> ls skills/</p>
+              <ul>
+                {% for skill_page in skill_pages limit: 3 %}
+                <li>
+                  <a class="skills-callout-name" href="{{ skill_page.url | relative_url }}">{{ skill_page.title }}/</a>
+                  <p class="skills-callout-desc">{{ skill_page.description | escape }}</p>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </section>
+        {% endif %}
+
         <section class="home-section">
           <h2 class="section-title">Latest writing</h2>
           <ul class="post-grid">

@@ -794,6 +794,73 @@ main.no-bio {
   background: var(--cta);
 }
 
+/* skills callout (home): pitch + button beside an `ls skills/` listing */
+.skills-callout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 30px;
+  padding: 22px 24px;
+}
+.skills-callout-text p {
+  margin: 0 0 14px;
+  font-size: 0.88em;
+  line-height: 1.65;
+}
+.skills-callout-text code {
+  font-size: 0.9em;
+}
+.skills-callout .skills-callout-lead {
+  margin-bottom: 10px;
+  font-family: var(--font-sans);
+  font-size: 1.25em;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.skills-callout .button {
+  margin-top: 6px;
+}
+.skills-callout-ls {
+  padding: 16px 18px;
+  background: var(--code-bg);
+  border: var(--bw) solid var(--line);
+}
+.skills-callout-ls ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.skills-callout-ls li + li {
+  margin-top: 14px;
+}
+.skills-callout-name {
+  font-weight: 700;
+}
+.skills-callout-desc {
+  display: -webkit-box;
+  margin: 4px 0 0;
+  overflow: hidden;
+  font-size: 0.82em;
+  line-height: 1.6;
+  color: var(--muted);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+/* stacked, it would run well past the experience section's height: list
+   just the names */
+@media (max-width: 720px) {
+  .skills-callout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+  .skills-callout-desc {
+    display: none;
+  }
+  .skills-callout-ls li + li {
+    margin-top: 6px;
+  }
+}
+
 /* post cards (home + blog index) */
 ul.post-grid {
   display: grid;

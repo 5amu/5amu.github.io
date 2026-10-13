@@ -70,7 +70,10 @@
   --link: #0f6b52;
   --cta: #0f6b52;
   --on-cta: #fbfaf7;
-  --title-shadow: #0f6b52;
+  /* big headings: dark green type with an ink hard shadow in light mode,
+     ink type with an emerald shadow in dark mode */
+  --title: #0b4634;
+  --title-shadow: #1c1c1c;
   --code-bg: #e2ded4;
   /* company logos: blended into the card in light mode (absorbs the opaque
      white backgrounds some ship with); a white plate in dark mode */
@@ -105,6 +108,7 @@
     --link: #4fd1a5;
     --cta: #4fd1a5;
     --on-cta: #14161a;
+    --title: #e7e6e2;
     --title-shadow: #0f6b52;
     --code-bg: #14161a;
     --logo-plate: #fff;
@@ -125,6 +129,7 @@
   --link: #4fd1a5;
   --cta: #4fd1a5;
   --on-cta: #14161a;
+  --title: #e7e6e2;
   --title-shadow: #0f6b52;
   --code-bg: #14161a;
   --logo-plate: #fff;
@@ -490,7 +495,7 @@ main.no-bio {
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.05;
-  color: var(--ink);
+  color: var(--title);
   text-shadow: 3px 3px 0 var(--title-shadow);
 }
 .section-title {
@@ -565,7 +570,7 @@ main.no-bio {
   font-weight: 700;
   line-height: 0.98;
   letter-spacing: -0.03em;
-  color: var(--ink);
+  color: var(--title);
   text-shadow: 4px 4px 0 var(--title-shadow);
 }
 .hero-role {
@@ -1135,7 +1140,7 @@ ul.post-grid {
   font-weight: 700;
   line-height: 1.04;
   letter-spacing: -0.025em;
-  color: var(--ink);
+  color: var(--title);
   text-shadow: 3px 3px 0 var(--title-shadow);
 }
 .post-date {

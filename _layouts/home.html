@@ -26,18 +26,125 @@
         </section>
 
         {% comment %}
-          Experience is ordered by end date, oldest left; no `end` (ongoing)
-          sorts last. Ties break on start date, then on position in the
-          file. Liquid's sort isn't stable, so build a unique string key per
-          entry ("end|start|index") and sort those instead of the objects.
+          Experience is drawn as a branching graph. Time runs left to right
+          in columns, one per distinct end date (no `end` = present, the
+          last column), so a card sits where its position ended and
+          positions ending together stack in the same column. Rows are
+          lanes: row 0 is the main line.
+
+          Back-to-back roles at the same company (the next one starting at
+          most a month after the previous ended: a promotion) form a chain
+          that shares one lane. Chains are walked by start date, the longer
+          running first when they start together, and each takes the first
+          lane that's free by then (its last chain ended in or before the
+          start month). So a chain that starts while the main line is busy
+          forks off it as a branch, in the gap before the first column it
+          was running at, and later roles in a chain carry on from the
+          previous card's node.
+
+          Liquid can't sort objects stably or assign into arrays, so this
+          works on sorted "key|index" strings and rebuilds arrays instead.
         {% endcomment %}
         {% assign jobs = site.data.experience %}
-        {% assign job_keys = "" | split: "" %}
+        {% assign start_keys = "" | split: "" %}
+        {% assign col_ends = "" | split: "" %}
         {% for job in jobs %}
-          {% assign job_end = job.end | default: "9999-99" %}
-          {% assign job_start = job.start | default: "0000-00" %}
           {% capture job_index %}000{{ forloop.index0 }}{% endcapture %}
-          {% capture job_key %}{{ job_end }}|{{ job_start }}|{{ job_index | slice: -3, 3 }}{% endcapture %}
+          {% capture job_key %}{{ job.start | default: "0000-00" }}|{{ job_index | slice: -3, 3 }}{% endcapture %}
+          {% assign start_keys = start_keys | push: job_key %}
+          {% assign job_end = job.end | default: "9999-99" %}
+          {% assign col_ends = col_ends | push: job_end %}
+        {% endfor %}
+        {% assign start_keys = start_keys | sort %}
+        {% assign col_ends = col_ends | sort | uniq %}
+
+        {% comment %} chains: "index|chain|previous role's end" per role, in start order {% endcomment %}
+        {% assign chain_companies = "" | split: "" %}
+        {% assign chain_starts = "" | split: "" %}
+        {% assign chain_ends = "" | split: "" %}
+        {% assign job_chains = "" | split: "" %}
+        {% for start_key in start_keys %}
+          {% assign job_index = start_key | split: "|" | last %}
+          {% assign job_n = job_index | plus: 0 %}
+          {% assign job = jobs[job_n] %}
+          {% assign job_start = job.start | default: "0000-00" %}
+          {% assign job_end = job.end | default: "9999-99" %}
+          {% assign start_months = job_start | slice: 0, 4 | plus: 0 | times: 12 %}
+          {% assign start_months = job_start | slice: 5, 2 | plus: start_months %}
+          {% assign job_chain = chain_ends.size %}
+          {% for chain_end in chain_ends %}
+            {% if chain_companies[forloop.index0] == job.company and chain_end <= job_start %}
+              {% assign end_months = chain_end | slice: 0, 4 | plus: 0 | times: 12 %}
+              {% assign end_months = chain_end | slice: 5, 2 | plus: end_months | plus: 1 %}
+              {% if end_months >= start_months %}{% assign job_chain = forloop.index0 %}{% break %}{% endif %}
+            {% endif %}
+          {% endfor %}
+          {% if job_chain == chain_ends.size %}
+            {% assign job_link = "-" %}
+            {% assign chain_companies = chain_companies | push: job.company %}
+            {% assign chain_starts = chain_starts | push: job_start %}
+            {% assign chain_ends = chain_ends | push: job_end %}
+          {% else %}
+            {% assign job_link = chain_ends[job_chain] %}
+            {% assign next_ends = "" | split: "" %}
+            {% for chain_end in chain_ends %}
+              {% if forloop.index0 == job_chain %}{% assign next_ends = next_ends | push: job_end %}{% else %}{% assign next_ends = next_ends | push: chain_end %}{% endif %}
+            {% endfor %}
+            {% assign chain_ends = next_ends %}
+          {% endif %}
+          {% capture chain_entry %}{{ job_index }}|{{ job_chain }}|{{ job_link }}{% endcapture %}
+          {% assign job_chains = job_chains | push: chain_entry %}
+        {% endfor %}
+
+        {% comment %} lanes per chain: by start, the later-ending first ("start|inverted end|chain") {% endcomment %}
+        {% assign chain_keys = "" | split: "" %}
+        {% for chain_start in chain_starts %}
+          {% assign chain_end = chain_ends[forloop.index0] %}
+          {% assign end_months = chain_end | slice: 0, 4 | plus: 0 | times: 12 %}
+          {% assign end_months = chain_end | slice: 5, 2 | plus: end_months %}
+          {% assign inverted_end = 999999 | minus: end_months | prepend: "000000" | slice: -6, 6 %}
+          {% capture chain_index %}000{{ forloop.index0 }}{% endcapture %}
+          {% capture chain_key %}{{ chain_start }}|{{ inverted_end }}|{{ chain_index | slice: -3, 3 }}{% endcapture %}
+          {% assign chain_keys = chain_keys | push: chain_key %}
+        {% endfor %}
+        {% assign chain_keys = chain_keys | sort %}
+        {% assign lane_ends = "" | split: "" %}
+        {% assign chain_lanes = "" | split: "" %}
+        {% for chain_key in chain_keys %}
+          {% assign chain_index = chain_key | split: "|" | last %}
+          {% assign chain_n = chain_index | plus: 0 %}
+          {% assign chain_start = chain_starts[chain_n] %}
+          {% assign chain_end = chain_ends[chain_n] %}
+          {% assign chain_lane = lane_ends.size %}
+          {% for lane_end in lane_ends %}
+            {% if lane_end <= chain_start %}{% assign chain_lane = forloop.index0 %}{% break %}{% endif %}
+          {% endfor %}
+          {% assign next_ends = "" | split: "" %}
+          {% for lane_end in lane_ends %}
+            {% if forloop.index0 == chain_lane %}{% assign next_ends = next_ends | push: chain_end %}{% else %}{% assign next_ends = next_ends | push: lane_end %}{% endif %}
+          {% endfor %}
+          {% if chain_lane == lane_ends.size %}{% assign next_ends = next_ends | push: chain_end %}{% endif %}
+          {% assign lane_ends = next_ends %}
+          {% capture chain_lane_key %}{{ chain_index }}|{{ chain_lane }}{% endcapture %}
+          {% assign chain_lanes = chain_lanes | push: chain_lane_key %}
+        {% endfor %}
+        {% comment %} sorted by chain index, so chain_lanes[n] is chain n's {% endcomment %}
+        {% assign chain_lanes = chain_lanes | sort %}
+
+        {% assign job_keys = "" | split: "" %}
+        {% for chain_entry in job_chains %}
+          {% assign entry_parts = chain_entry | split: "|" %}
+          {% assign job_index = entry_parts[0] %}
+          {% assign job_n = job_index | plus: 0 %}
+          {% assign job = jobs[job_n] %}
+          {% assign chain_n = entry_parts[1] | plus: 0 %}
+          {% assign job_lane = chain_lanes[chain_n] | split: "|" | last | plus: 0 %}
+          {% assign job_link = entry_parts[2] %}
+          {% if job_lane == 0 %}{% assign job_link = "-" %}{% endif %}
+          {% assign job_start = job.start | default: "0000-00" %}
+          {% assign job_end = job.end | default: "9999-99" %}
+          {% comment %} cards in reading order: column, then lane {% endcomment %}
+          {% capture job_key %}{{ job_end }}|{{ job_lane | prepend: "00" | slice: -2, 2 }}|{{ job_start }}|{{ job_index }}|{{ job_link }}{% endcapture %}
           {% assign job_keys = job_keys | push: job_key %}
         {% endfor %}
         {% assign job_keys = job_keys | sort %}
@@ -46,16 +153,36 @@
           <div class="section-head">
             <h2 class="section-title" id="experience-title">Experience</h2>
             <div class="timeline-nav" hidden>
-              <button type="button" class="timeline-btn" data-step="-1" aria-label="Earlier position">{% include icon.html name="arrow-left" %}</button>
-              <button type="button" class="timeline-btn" data-step="1" aria-label="Later position">{% include icon.html name="arrow-right" %}</button>
+              <button type="button" class="timeline-btn" data-step="-1" aria-label="Earlier positions">{% include icon.html name="arrow-left" %}</button>
+              <button type="button" class="timeline-btn" data-step="1" aria-label="Later positions">{% include icon.html name="arrow-right" %}</button>
             </div>
           </div>
           <div class="timeline" tabindex="0" role="region" aria-label="Experience, oldest to most recent">
             <ol class="timeline-track">
               {% for job_key in job_keys %}
-              {% assign job_index = job_key | split: "|" | last | plus: 0 %}
-              {% assign job = jobs[job_index] %}
-              <li class="timeline-item{% unless job.end %} is-current{% endunless %}">
+              {% assign key_parts = job_key | split: "|" %}
+              {% assign job_end = key_parts[0] %}
+              {% assign job_lane = key_parts[1] | plus: 0 %}
+              {% assign job_start = key_parts[2] %}
+              {% assign job_n = key_parts[3] | plus: 0 %}
+              {% assign job = jobs[job_n] %}
+              {% assign job_link = key_parts[4] %}
+              {% comment %}
+                first_col: the first column this position was already running
+                at (started before that column's month); the script slides
+                the card back there when an earlier column is focused.
+              {% endcomment %}
+              {% assign job_col = 0 %}
+              {% assign first_col = -1 %}
+              {% assign link_col = -1 %}
+              {% for col_end in col_ends %}
+                {% if first_col < 0 and col_end > job_start %}{% assign first_col = forloop.index0 %}{% endif %}
+                {% if col_end == job_link %}{% assign link_col = forloop.index0 %}{% endif %}
+                {% if col_end == job_end %}{% assign job_col = forloop.index0 %}{% break %}{% endif %}
+              {% endfor %}
+              {% if first_col < 0 %}{% assign first_col = job_col %}{% endif %}
+              {% if link_col >= 0 %}{% assign path_class = " is-link" %}{% assign path_from = link_col %}{% elsif job_lane > 0 %}{% assign path_class = " is-branch" %}{% assign path_from = first_col %}{% else %}{% assign path_class = "" %}{% assign path_from = job_col %}{% endif %}
+              <li class="timeline-item{% unless job.end %} is-current{% endunless %}{{ path_class }}" data-col="{{ job_col }}" data-first="{{ first_col }}" style="grid-column: {{ job_col | plus: 1 }}; grid-row: {{ job_lane | plus: 1 }}; --lane: {{ job_lane }}; --back: {{ job_col | minus: path_from }}">
                 <div class="timeline-card">
                   {% if job.logo %}<img class="timeline-logo" src="{{ job.logo | relative_url }}" alt="" width="48" height="48" loading="lazy" />{% endif %}
                   <div class="timeline-body">
@@ -106,34 +233,54 @@
     </div>
     {% include footer.html %}
     <script>
-      // Experience timeline: the card sitting at the right edge of the track
-      // is "active" (full color), the rest are grayed out by CSS. Starts on
-      // the right-most card, the current position.
+      // Experience timeline: the column sitting at the right edge of the
+      // track is "active". Every position that was running at that moment
+      // slides back along its path into that column (--shift, in columns)
+      // and shows in full color; the rest are grayed out by CSS. Starts on
+      // the right-most column, the present.
       (function () {
         var timeline = document.querySelector(".timeline");
         if (!timeline) return;
         var items = Array.prototype.slice.call(timeline.querySelectorAll(".timeline-item"));
         if (!items.length) return;
+        var cols = [];
+        items.forEach(function (item) {
+          var col = Number(item.getAttribute("data-col"));
+          (cols[col] = cols[col] || []).push(item);
+        });
         var nav = document.querySelector(".timeline-nav");
         var buttons = nav ? Array.prototype.slice.call(nav.querySelectorAll("[data-step]")) : [];
         var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         var active = -1;
 
-        function setActive(i) {
-          if (i === active) return;
-          active = i;
-          items.forEach(function (item, j) {
-            item.classList.toggle("is-active", j === i);
+        function colOf(item) {
+          return Number(item.getAttribute("data-col"));
+        }
+
+        // the column a card shows in: the focused one while its position
+        // was running then, else the nearest end of its path
+        function shownCol(item) {
+          var first = Number(item.getAttribute("data-first"));
+          return Math.min(colOf(item), Math.max(first, active));
+        }
+
+        function setActive(c) {
+          if (c === active) return;
+          active = c;
+          items.forEach(function (item) {
+            var shown = shownCol(item);
+            item.style.setProperty("--shift", colOf(item) - shown);
+            item.classList.toggle("is-active", shown === c);
           });
           buttons.forEach(function (btn) {
             var target = active + Number(btn.getAttribute("data-step"));
-            btn.disabled = target < 0 || target >= items.length;
+            btn.disabled = target < 0 || target >= cols.length;
           });
         }
 
-        // scroll so card i sits at the right edge (where it snaps)
-        function bringToEdge(i, smooth) {
-          var item = items[i];
+        // scroll so column c sits at the right edge (where it snaps)
+        function bringToEdge(c, smooth) {
+          var item = cols[c][0];
           var edgePadding = parseFloat(getComputedStyle(timeline).scrollPaddingInlineEnd) || 0;
           timeline.scrollTo({
             left: item.offsetLeft + item.offsetWidth + edgePadding - timeline.clientWidth,
@@ -141,17 +288,17 @@
           });
         }
 
-        bringToEdge(items.length - 1, false);
-        setActive(items.length - 1);
+        bringToEdge(cols.length - 1, false);
+        setActive(cols.length - 1);
         timeline.classList.add("is-ready");
 
         if ("IntersectionObserver" in window) {
-          // a thin strip near the right edge of the track: whatever card is
-          // crossing it is the highlighted one
+          // a thin strip near the right edge of the track: whatever column
+          // is crossing it is the highlighted one
           var observer = new IntersectionObserver(
             function (entries) {
               entries.forEach(function (entry) {
-                if (entry.isIntersecting) setActive(items.indexOf(entry.target));
+                if (entry.isIntersecting) setActive(colOf(entry.target));
               });
             },
             { root: timeline, rootMargin: "0px -10% 0px -88%", threshold: 0 }
@@ -161,18 +308,19 @@
           });
         }
 
-        items.forEach(function (item, i) {
+        items.forEach(function (item) {
           item.addEventListener("click", function () {
-            if (i !== active) bringToEdge(i, true);
+            var shown = shownCol(item);
+            if (shown !== active) bringToEdge(shown, true);
           });
         });
 
-        if (nav && items.length > 1) {
+        if (nav && cols.length > 1) {
           nav.hidden = false;
           buttons.forEach(function (btn) {
             btn.addEventListener("click", function () {
               var target = active + Number(btn.getAttribute("data-step"));
-              if (target >= 0 && target < items.length) bringToEdge(target, true);
+              if (target >= 0 && target < cols.length) bringToEdge(target, true);
             });
           });
         }

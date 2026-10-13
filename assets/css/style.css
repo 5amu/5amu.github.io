@@ -625,11 +625,16 @@ main.no-bio {
   margin-top: 72px;
 }
 
-/* experience timeline: horizontal scroll-snap track, oldest on the left,
-   cards snapping to the right edge. The card sitting at the right edge is
-   highlighted (set by the script in home.html; it starts on the current
-   position, the right-most card); once the script runs (.is-ready) the
-   others go gray. */
+/* experience timeline: a branching graph on a horizontal scroll-snap
+   track, oldest on the left. Columns are end dates (a card sits where its
+   position ended), rows are lanes: row 1 is the main line, positions that
+   overlap it fork off into the rows below (home.html works out the lanes
+   and sets each card's grid cell, --lane and --back). Columns snap to the
+   right edge; the column sitting there is focused (set by the script in
+   home.html; it starts on the present, the right-most column): every
+   position running at that moment slides back along its path into it
+   (--shift columns) and is highlighted. Once the script runs (.is-ready)
+   the others go gray. */
 .section-head {
   display: flex;
   align-items: flex-end;
@@ -706,23 +711,30 @@ main.no-bio {
 }
 .timeline-track {
   position: relative;
-  display: flex;
-  gap: var(--gap);
+  display: grid;
+  grid-auto-columns: var(--card);
+  /* every lane as tall as the tallest, so a branch climbs back to the main
+     line in whole multiples of its own item's height */
+  grid-auto-rows: 1fr;
+  column-gap: var(--gap);
   width: max-content;
   margin: 0;
   /* left padding lets even the oldest card reach the right edge */
-  padding: 8px 10px 22px calc(100cqw - var(--card) - 10px);
+  padding: 8px 10px 4px calc(100cqw - var(--card) - 10px);
   list-style: none;
 }
 .timeline-item {
+  --slide: calc(var(--shift, 0) * -1 * (var(--card) + var(--gap)));
   position: relative;
-  flex: 0 0 var(--card);
-  padding-top: 30px;
+  padding: 30px 0 18px;
   scroll-snap-align: end;
+  /* a card can slide out of its cell: only the card itself takes clicks */
+  pointer-events: none;
 }
-/* lead-in before the oldest card: the rail continues left to the track's
-   edge as a dotted line (square dots, like the nodes), ending under the
-   first node. Its width is the track's left padding plus half a card. */
+/* lead-in before the oldest column: the main line continues left to the
+   track's edge as a dotted line (square dots, like the nodes), ending under
+   the first column. Its width is the track's left padding plus half a
+   card. */
 .timeline-track::before {
   content: "";
   position: absolute;
@@ -736,7 +748,16 @@ main.no-bio {
     transparent 5px 11px
   );
 }
-/* the rail: a node above each card, joined to the next one */
+/* the main line, from the first column to the last (the present) */
+.timeline-track::after {
+  content: "";
+  position: absolute;
+  top: calc(8px + 9px);
+  left: calc(100cqw - 10px - var(--card) / 2);
+  right: calc(10px + var(--card) / 2);
+  border-top: var(--bw) solid var(--line);
+}
+/* a node above each card, on its lane */
 .timeline-item::before {
   content: "";
   position: absolute;
@@ -747,21 +768,45 @@ main.no-bio {
   height: 16px;
   background: var(--paper);
   border: var(--bw) solid var(--line);
-  transition: background 0.3s ease;
+  translate: var(--slide) 0;
+  transition: background 0.3s ease, translate 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.timeline-item:not(:last-child)::after {
+/* a branch: drops off the main line in the gap before the first column its
+   position reaches (--back columns to the left), then runs along its lane
+   to the node. Going up --lane rows is --lane times this item's height. */
+.timeline-item.is-branch::after {
+  content: "";
+  position: absolute;
+  box-sizing: border-box;
+  top: calc(9px - var(--lane) * 100%);
+  left: calc(var(--back) * -1 * (var(--card) + var(--gap)) - var(--gap) / 2 - var(--bw) / 2);
+  right: 50%;
+  height: calc(var(--lane) * 100% + var(--bw));
+  border-left: var(--bw) solid var(--line);
+  border-bottom: var(--bw) solid var(--line);
+  border-bottom-left-radius: 14px;
+  transition: border-color 0.3s ease;
+}
+/* a position carrying on from the previous card in its lane (--back
+   columns to the left): a straight line between the two nodes */
+.timeline-item.is-link::after {
   content: "";
   position: absolute;
   top: 9px;
-  left: 50%;
-  width: calc(100% + var(--gap));
+  left: calc(50% - var(--back) * (var(--card) + var(--gap)));
+  right: 50%;
   border-top: var(--bw) solid var(--line);
+  transition: border-color 0.3s ease;
 }
 .timeline-item.is-current::before {
   background: var(--cta);
 }
 .timeline-card {
+  position: relative;
+  z-index: 1;
   display: flex;
+  pointer-events: auto;
+  translate: var(--slide) 0;
   align-items: flex-start;
   gap: 16px;
   height: 100%;
@@ -769,7 +814,8 @@ main.no-bio {
   background: var(--paper);
   border: var(--bw) solid var(--line);
   box-shadow: var(--sh) var(--sh) 0 0 var(--drop);
-  transition: filter 0.35s ease, opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: filter 0.35s ease, opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    translate 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 /* logos: see --logo-plate / --logo-blend */
 .timeline-logo {
@@ -821,6 +867,11 @@ main.no-bio {
 }
 .timeline.is-ready .timeline-item.is-active::before {
   background: var(--cta);
+}
+.timeline.is-ready .timeline-item.is-active.is-branch::after,
+.timeline.is-ready .timeline-item.is-active.is-link::after {
+  z-index: 1;
+  border-color: var(--cta);
 }
 
 /* skills callout (home): pitch + button beside an `ls skills/` listing,

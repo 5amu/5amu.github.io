@@ -1,7 +1,11 @@
-# Experience timeline on the homepage. Shown left to right ordered by END
-# date (no `end` = ongoing, sorts last), ties broken by start date and then
-# by order in this file. It opens scrolled to the right-most card, so the
-# current main position is the ongoing one with the latest start.
+# Experience timeline on the homepage, drawn as a branching graph. Time runs
+# left to right with one column per end date (no `end` = present, the last
+# column), so each card sits where its position ended. Positions that
+# overlap the one on the main line fork off it as branches, in rows below.
+# Back-to-back roles at the same company (a promotion) stay on one line, and
+# when two start in the same month the one running longer gets the higher
+# row. Ongoing positions all end up in the present column, in parallel. It opens scrolled to the present; focusing an earlier column
+# slides every position running at that moment back into it.
 #
 #   - role: Job title                    (required)
 #     company: Company name              (required)

@@ -692,7 +692,10 @@ main.no-bio {
 }
 
 .timeline {
-  --card: min(400px, 84vw);
+  /* the snapped card plus a third of the previous one fill the box (10px
+     is the snap edge's padding); 100cqw is this box's width, since --card
+     is only used inside it */
+  --card: calc((100cqw - var(--gap) - 10px) * 3 / 4);
   --gap: 22px;
   overflow-x: auto;
   overscroll-behavior-x: contain;
@@ -1652,5 +1655,16 @@ ul.skill-list {
   .post-card-thumb {
     width: 44px;
     height: 44px;
+  }
+  /* the cards are three quarters of a phone's width: a smaller logo
+     leaves the text room */
+  .timeline-card {
+    gap: 10px;
+    padding: 12px;
+  }
+  .timeline-logo {
+    width: 48px;
+    height: 48px;
+    padding: 5px;
   }
 }

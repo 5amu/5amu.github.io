@@ -184,11 +184,12 @@
               {% if link_col >= 0 %}{% assign path_class = " is-link" %}{% assign path_from = link_col %}{% elsif job_lane > 0 %}{% assign path_class = " is-branch" %}{% assign path_from = first_col %}{% else %}{% assign path_class = "" %}{% assign path_from = job_col %}{% endif %}
               <li class="timeline-item{% unless job.end %} is-current{% endunless %}{{ path_class }}" data-col="{{ job_col }}" data-first="{{ first_col }}" style="grid-column: {{ job_col | plus: 1 }}; grid-row: {{ job_lane | plus: 1 }}; --lane: {{ job_lane }}; --back: {{ job_col | minus: path_from }}">
                 <div class="timeline-card">
-                  {% if job.logo %}<img class="timeline-logo" src="{{ job.logo | relative_url }}" alt="" width="48" height="48" loading="lazy" />{% endif %}
+                  {% if job.logo %}<img class="timeline-logo" src="{{ job.logo | relative_url }}" alt="" width="72" height="72" loading="lazy" />{% endif %}
                   <div class="timeline-body">
                   <p class="timeline-period">{% if job.start %}<time datetime="{{ job.start }}">{{ job.start | append: "-01" | date: "%b %Y" }}</time> - {% endif %}{% if job.end %}<time datetime="{{ job.end }}">{{ job.end | append: "-01" | date: "%b %Y" }}</time>{% else %}present{% endif %}</p>
                   <h3 class="timeline-role">{{ job.role }}</h3>
                   <p class="timeline-company">{{ job.company }}</p>
+                  {% if job.industries.size > 0 %}<ul class="timeline-tags" aria-label="Industries">{% for industry in job.industries %}<li class="tag">#{{ industry }}</li>{% endfor %}</ul>{% endif %}
                   </div>
                 </div>
               </li>

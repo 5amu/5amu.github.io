@@ -12,49 +12,50 @@
 #     logo: /assets/img/logos/x.png      (optional, square-ish; shown on a white tile)
 #     start: "2021-03"                   (YYYY-MM, quoted; shown as "Mar 2021")
 #     end: "2023-06"                     (YYYY-MM, quoted; omit = present)
+#     industries: [fintech, banking]     (optional; shown as #tags on the card)
 
-- role: Student Internship
+- role: Internship
   company: Spike Reply
   logo: /assets/img/logos/spike-reply.svg
   start: "2019-03"
   end: "2019-05"
-
-- role: Security Analyst
-  company: BIP
-  logo: /assets/img/logos/bip.svg
-  start: "2020-12"
-  end: "2022-03"
+  industries: [software]
 
 - role: Security Consultant
   company: BIP
   logo: /assets/img/logos/bip.svg
-  start: "2022-04"
+  start: "2020-12"
   end: "2023-07"
+  industries: [telco, fintech, betting]
 
 - role: Senior Security Consultant
   company: Aspisec
   logo: /assets/img/logos/aspisec.png
   start: "2023-07"
   end: "2025-06"
+  industries: [pharma, insurance, industrial]
 
-- role: "Co-Founder & CEO"
+- role: "Founder & CEO"
   company: Asuba
   logo: /assets/img/logos/asuba.svg
   start: "2025-02"
+  industries: [provisioning, manufacturing]
 
-- role: Cyber Security Instructor
-  company: EPICODE Institute of Technology
+- role: Cybersecurity Instructor
+  company: Epicode
   logo: /assets/img/logos/epicode.png
   start: "2025-07"
   end: "2025-12"
+  industries: [teaching]
 
-- role: Cybersecurity Specialist
+- role: "Red Team & VM Lead"
   company: Allitude
   logo: /assets/img/logos/allitude.png
   start: "2025-07"
-  end: "2025-12"
+  industries: [fintech, banking]
 
-- role: Red Team and Vulnerability Management Lead
-  company: Allitude
-  logo: /assets/img/logos/allitude.png
-  start: "2026-01"
+- role: "Founder & CIO"
+  company: Atelier Spicy
+  logo: /assets/img/logos/atelierspicy.webp
+  start: "2026-09"
+  industries: [marketing, social]

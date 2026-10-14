@@ -692,7 +692,10 @@ main.no-bio {
 }
 
 .timeline {
-  --card: min(320px, 76vw);
+  /* the snapped card plus a third of the previous one fill the box (10px
+     is the snap edge's padding); 100cqw is this box's width, since --card
+     is only used inside it */
+  --card: calc((100cqw - var(--gap) - 10px) * 3 / 4);
   --gap: 22px;
   overflow-x: auto;
   overscroll-behavior-x: contain;
@@ -812,10 +815,11 @@ main.no-bio {
   display: flex;
   pointer-events: auto;
   translate: var(--slide) 0;
-  align-items: flex-start;
-  gap: 16px;
+  /* the logo beside a text block about as tall as it */
+  align-items: center;
+  gap: 14px;
   height: 100%;
-  padding: 20px 22px;
+  padding: 14px 16px;
   background: var(--paper);
   border: var(--bw) solid var(--line);
   box-shadow: var(--sh) var(--sh) 0 0 var(--drop);
@@ -825,9 +829,9 @@ main.no-bio {
 /* logos: see --logo-plate / --logo-blend */
 .timeline-logo {
   flex: 0 0 auto;
-  width: 48px;
-  height: 48px;
-  padding: 5px;
+  width: 72px;
+  height: 72px;
+  padding: 7px;
   object-fit: contain;
   background: var(--logo-plate);
   mix-blend-mode: var(--logo-blend);
@@ -835,26 +839,41 @@ main.no-bio {
 }
 .timeline-body {
   min-width: 0;
+  line-height: 1.35;
 }
 .timeline-period {
   margin: 0;
-  font-size: 0.75em;
+  font-size: 0.7em;
   font-weight: 500;
   letter-spacing: 0.06em;
   color: var(--muted);
 }
 .timeline-role {
-  margin: 6px 0 0;
+  margin: 2px 0 0;
   font-family: var(--font-sans);
-  font-size: 1.25em;
+  font-size: 1.05em;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.01em;
 }
 .timeline-company {
-  margin: 6px 0 0;
+  margin: 2px 0 0;
+  font-size: 0.85em;
   font-weight: 700;
   color: var(--link);
+}
+.timeline-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.timeline-tags .tag {
+  padding: 0 5px;
+  font-size: 0.68em;
+  letter-spacing: 0.02em;
 }
 .timeline.is-ready .timeline-item:not(.is-active) {
   cursor: pointer;
@@ -1636,5 +1655,16 @@ ul.skill-list {
   .post-card-thumb {
     width: 44px;
     height: 44px;
+  }
+  /* the cards are three quarters of a phone's width: a smaller logo
+     leaves the text room */
+  .timeline-card {
+    gap: 10px;
+    padding: 12px;
+  }
+  .timeline-logo {
+    width: 48px;
+    height: 48px;
+    padding: 5px;
   }
 }
